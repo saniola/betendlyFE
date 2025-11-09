@@ -2,7 +2,9 @@
   <div :class="$style.component">
     <Header />
 
-    <slot />
+    <div class="container">
+      <slot />
+    </div>
 
     <div
       v-if="mainState.isLoading"
@@ -29,6 +31,7 @@ import { mainState } from '@/state';
 .component {
   background-color: #fff;
   height: 100%;
+  padding-bottom: 30px;
   padding-top: 52px;
 }
 
