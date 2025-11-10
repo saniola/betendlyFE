@@ -57,8 +57,9 @@
 </template>
 
 <script setup lang="ts">
-import { testEmail } from '@/helpers/test-email';
 import { ref } from 'vue';
+import { signup } from '@/actions/signup';
+import { testEmail } from '@/helpers/test-email';
 
 const valid = ref(false);
 const showPassword = ref(false);
@@ -85,7 +86,7 @@ function onSubmit() {
     isMaster: isMaster.value,
   };
 
-  alert(`✅ Signed up as ${data.firstName} ${data.lastName}`);
+  signup(data);
 }
 </script>
 
