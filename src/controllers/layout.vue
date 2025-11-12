@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.component">
-    <Header />
+    <Header :current-user="mainState.currentUser"/>
 
     <div class="container">
       <slot />

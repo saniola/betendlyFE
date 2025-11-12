@@ -12,7 +12,13 @@
         </RouterLink>
 
         <div>
-          <template v-if="!isLoggedIn">
+          <a
+            v-if="currentUser"
+            class="ms-2 text-white font-weight-medium"
+            :href="`/profile/${currentUser.id}`"
+            v-text="`${currentUser.firstName} ${currentUser.lastName}`" />
+
+          <template v-else>
             <v-btn
               v-if="!['signup'].includes(route.name as string)"
               color="white"
@@ -33,14 +39,6 @@
               Login
             </v-btn>
           </template>
-
-          <template v-else>
-            <v-avatar size="36" class="ms-2">
-              <v-img :src="user.avatar" alt="User avatar" />
-            </v-avatar>
-
-            <span class="ms-2 text-white font-weight-medium">{{ user.name }}</span>
-          </template>
         </div>
       </nav>
     </div>
@@ -50,15 +48,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
+import type { CurrentUser } from '@/types/current-user';
+
+defineProps<{
+  currentUser: CurrentUser | null,
+}>();
 
 const route = useRoute();
 
 const isLoggedIn = ref(false);
-
-const user = ref({
-  name: 'Jane Doe',
-  avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
-});
 
 const onSignup = () => {
   console.log('Navigate to signup');

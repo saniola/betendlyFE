@@ -42,6 +42,7 @@
 </template>
 
 <script setup lang="ts">
+import { login } from '@/actions/login';
 import { testEmail } from '@/helpers/test-email';
 import { ref } from 'vue';
 
@@ -61,7 +62,8 @@ function onSubmit() {
     email: email.value,
     password: password.value,
   };
-  alert(`✅ Logged in as ${data.email}`)
+
+  login(data);
 }
 </script>
 
