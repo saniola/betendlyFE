@@ -19,7 +19,9 @@
             <a :href="`mailto:${user.email}`" class="text-body-2 text-medium-emphasis mb-0">{{ user.email }}</a>
           </p>
           
-          <p :class="$style.contact">
+          <p
+            v-if="user.phone"
+            :class="$style.contact">
             <a :href="`tel:${user.phone}`" class="text-body-2 text-medium-emphasis mb-0">{{ user.phone }}</a>
           </p>
         </v-col>
@@ -30,72 +32,82 @@
       <template v-if="user.isMaster && user.master">
         <p class="mb-4">{{ user.master.about }}</p>
 
-        <v-row dense>
-          <v-col cols="12" md="6">
-            <v-icon icon="mdi-map-marker" start /> {{ user.master.address }}
-          </v-col>
+        <template v-if="user.master.address || user.master.yearsExperience">
+          <v-row dense>
+            <v-col
+              v-if="user.master.address"
+              cols="12" md="6">
+              <v-icon icon="mdi-map-marker" start /> {{ user.master.address }}
+            </v-col>
 
-          <v-col cols="12" md="6">
-            <v-icon icon="mdi-briefcase" start /> Досвід: {{ user.master.yearsExperience }} років
-          </v-col>
-        </v-row>
+            <v-col
+              v-if="user.master.yearsExperience"
+              cols="12" md="6">
+              <v-icon icon="mdi-briefcase" start /> Досвід: {{ user.master.yearsExperience }} років
+            </v-col>
+          </v-row>
 
-        <v-divider class="my-4" />
+          <v-divider class="my-4" />
+        </template>
 
-        <h3 class="text-h6 mb-2">Навички</h3>
+        <template v-if="user.master.skills?.length">
+          <h3 class="text-h6 mb-2">Навички</h3>
 
-        <div :class="$style.skills">
-          <v-chip
-            v-for="(skill, i) in user.master.skills"
-            :key="i"
-            color="primary"
-            flat
-            size="small"
-            variant="flat"
-            :text="skill" />
-        </div>
+          <div :class="$style.skills">
+            <v-chip
+              v-for="(skill, i) in user.master.skills"
+              :key="i"
+              color="primary"
+              flat
+              size="small"
+              variant="flat"
+              :text="skill" />
+          </div>
 
-        <v-divider class="my-4" />
+          <v-divider class="my-4" />
+        </template>
 
-        <h3 class="text-h6 mb-2">Послуги</h3>
+        <template v-if="user.master.services?.length">
+          <h3 class="text-h6 mb-2">Послуги</h3>
 
-        <v-table>
-          <thead>
-            <tr>
-              <th class="text-left">Назва</th>
+          <v-table>
+            <thead>
+              <tr>
+                <th class="text-left">Назва</th>
 
-              <th class="text-left">Опис</th>
+                <th class="text-left">Опис</th>
 
-              <th class="text-left">Тривалість</th>
+                <th class="text-left">Тривалість</th>
 
-              <th class="text-left">Ціна</th>
+                <th class="text-left">Ціна</th>
 
-              <th />
-            </tr>
-          </thead>
+                <th />
+              </tr>
+            </thead>
 
-          <tbody>
-            <tr
-              v-for="service in user.master.services"
-              :key="service.id">
-              <td>{{ service.name }}</td>
+            <tbody>
+              <tr
+                v-for="service in user.master.services"
+                :key="service.id">
+                <td>{{ service.name }}</td>
 
-              <td>{{ service.description }}</td>
+                <td>{{ service.description }}</td>
 
-              <td>{{ service.durationMinutes }} хв</td>
+                <td>{{ service.durationMinutes }} хв</td>
 
-              <td>{{ service.price }} грн</td>
+                <td>{{ service.price }} грн</td>
 
-              <td>
-                <v-btn
-                  color="primary"
-                  type="button">
-                  Записатись
-                </v-btn>
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
+                <td>
+                  <v-btn
+                    color="primary"
+                    type="button">
+                    Записатись
+                  </v-btn>
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+        </template>
       </template>
     </v-card>
   </v-container>
