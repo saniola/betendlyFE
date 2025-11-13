@@ -3,7 +3,7 @@
     <v-card :class="$style.component">
       <RouterLink
         :class="$style.avatar"
-        :to="`/member/${master.id}`">
+        :to="`/member/${master.userId}`">
         <img
           :alt="master.fullName"
           :src="props.master.avatarUrl || defaultAvatar" />
@@ -12,7 +12,7 @@
       <div :class="$style.info">
         <h3 :class="$style.name">
           <RouterLink
-            :to="`/member/${master.id}`"
+            :to="`/member/${master.userId}`"
             v-text="master.fullName" />
         </h3>
 

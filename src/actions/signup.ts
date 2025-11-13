@@ -4,11 +4,12 @@ import { setLoadingStatus } from '@/actions/set-loading-status';
 import { API_BASE_URL } from '@/config';
 import router from '@/router';
 import type { SignupData } from '@/types/signup';
+import { http } from '@/utils/http';
 
 export async function signup(data: SignupData) {
   setLoadingStatus(true);
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/register`, data);
+    const response = await http.post(`${API_BASE_URL}/auth/register`, data);
     localStorage.setItem('token', response.data.token);
     localStorage.setItem('tokenExpire', response.data.expire);
     localStorage.setItem('refreshToken', response.data.refreshToken);
