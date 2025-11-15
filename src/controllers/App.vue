@@ -5,6 +5,8 @@
 </template>
 
 <script setup lang="ts">
-import { setLoadingStatus } from '@/actions/set-loading-status';
+import { fetchCurrentUser } from '@/actions/fetch-current-user';
 import Layout from '@/controllers/layout.vue';
+
+fetchCurrentUser();
 </script>

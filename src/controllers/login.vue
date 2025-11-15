@@ -42,8 +42,14 @@
 </template>
 
 <script setup lang="ts">
+import { login } from '@/actions/login';
 import { testEmail } from '@/helpers/test-email';
+import router from '@/router';
 import { ref } from 'vue';
+
+if (localStorage.getItem('token')) {
+  router.push({ name: 'home' });
+}
 
 const valid = ref(false);
 const showPassword = ref(false);
@@ -61,7 +67,8 @@ function onSubmit() {
     email: email.value,
     password: password.value,
   };
-  alert(`✅ Logged in as ${data.email}`)
+
+  login(data);
 }
 </script>
 

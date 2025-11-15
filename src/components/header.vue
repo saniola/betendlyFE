@@ -4,22 +4,27 @@
       <nav :class="$style.navbar">
         <RouterLink to="/">
           <img
-            alt="Loading..."
+            alt="BeTendly"
             height="30"
             src="@/assets/logo.png"
             width="115"
             :class="$style.logo" />
         </RouterLink>
 
-        <div>
-          <template v-if="!isLoggedIn">
+        <div v-if="!isLoading">
+          <RouterLink
+            v-if="currentUser"
+            class="ms-2 text-white font-weight-medium"
+            :to="`/member/${currentUser.id}`"
+            v-text="`${props.currentUser?.firstName} ${props.currentUser?.lastName}`" />
+
+          <template v-else>
             <v-btn
               v-if="!['signup'].includes(route.name as string)"
               color="white"
               variant="outlined"
               class="text-none ms-2"
-              :to="{ name: 'signup' }"
-              @click="onSignup">
+              :to="{ name: 'signup' }">
               Sign Up
             </v-btn>
 
@@ -28,18 +33,9 @@
               color="white"
               variant="outlined"
               class="text-none ms-2"
-              :to="{ name: 'login' }"
-              @click="onLogin">
+              :to="{ name: 'login' }">
               Login
             </v-btn>
-          </template>
-
-          <template v-else>
-            <v-avatar size="36" class="ms-2">
-              <v-img :src="user.avatar" alt="User avatar" />
-            </v-avatar>
-
-            <span class="ms-2 text-white font-weight-medium">{{ user.name }}</span>
           </template>
         </div>
       </nav>
@@ -48,25 +44,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
+import type { CurrentUser } from '@/types/current-user';
+
+const props = defineProps<{
+  currentUser: CurrentUser | null,
+  isLoading: boolean,
+}>();
 
 const route = useRoute();
-
-const isLoggedIn = ref(false);
-
-const user = ref({
-  name: 'Jane Doe',
-  avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
-});
-
-const onSignup = () => {
-  console.log('Navigate to signup');
-};
-
-const onLogin = () => {
-  console.log('Navigate to login');
-};
 </script>
 
 <style module lang="scss">
