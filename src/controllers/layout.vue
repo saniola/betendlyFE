@@ -1,6 +1,8 @@
 <template>
   <div :class="$style.component">
-    <Header :current-user="mainState.currentUser"/>
+    <Header
+      :current-user="mainState.currentUser"
+      :is-loading="mainState.isLoading" />
 
     <div class="container">
       <slot />

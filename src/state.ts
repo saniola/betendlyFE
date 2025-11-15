@@ -16,7 +16,7 @@ interface MainState {
 export const mainState = reactive<MainState>({
   currentPage: 1,
   currentUser: null,
-  isLoading: true,
+  isLoading: false,
   masters: [],
   title: 'Hello BeTendly',
   totalPages: 1,

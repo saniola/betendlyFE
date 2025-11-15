@@ -4,19 +4,19 @@
       <nav :class="$style.navbar">
         <RouterLink to="/">
           <img
-            alt="Loading..."
+            alt="BeTendly"
             height="30"
             src="@/assets/logo.png"
             width="115"
             :class="$style.logo" />
         </RouterLink>
 
-        <div>
-          <a
+        <div v-if="!isLoading">
+          <RouterLink
             v-if="currentUser"
             class="ms-2 text-white font-weight-medium"
-            :href="`/profile/${currentUser.id}`"
-            v-text="`${currentUser.firstName} ${currentUser.lastName}`" />
+            :to="`/member/${currentUser.id}`"
+            v-text="`${props.currentUser?.firstName} ${props.currentUser?.lastName}`" />
 
           <template v-else>
             <v-btn
@@ -24,8 +24,7 @@
               color="white"
               variant="outlined"
               class="text-none ms-2"
-              :to="{ name: 'signup' }"
-              @click="onSignup">
+              :to="{ name: 'signup' }">
               Sign Up
             </v-btn>
 
@@ -34,8 +33,7 @@
               color="white"
               variant="outlined"
               class="text-none ms-2"
-              :to="{ name: 'login' }"
-              @click="onLogin">
+              :to="{ name: 'login' }">
               Login
             </v-btn>
           </template>
@@ -46,25 +44,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 import type { CurrentUser } from '@/types/current-user';
 
-defineProps<{
+const props = defineProps<{
   currentUser: CurrentUser | null,
+  isLoading: boolean,
 }>();
 
 const route = useRoute();
-
-const isLoggedIn = ref(false);
-
-const onSignup = () => {
-  console.log('Navigate to signup');
-};
-
-const onLogin = () => {
-  console.log('Navigate to login');
-};
 </script>
 
 <style module lang="scss">

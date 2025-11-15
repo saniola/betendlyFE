@@ -1,13 +1,20 @@
-import { setLoadingStatus } from '@/actions/set-loading-status';
-import { updateToken } from '@/actions/update-token';
+import { updateToken } from '@/helpers/update-token';
 import { API_BASE_URL } from '@/config';
 import { mainState } from '@/state';
-import { http } from '@/utils/http';
+import axios from 'axios';
 
 export async function fetchCurrentUser() {
-  setLoadingStatus(true);
-  await updateToken();
-  const response = await http.get(`${API_BASE_URL}/auth/me`);
-  mainState.currentUser = response.data;
-  setLoadingStatus(true);
+  const token = localStorage.getItem('token');
+  if (token) {
+    await updateToken();
+    const response = await axios.get(
+      `${API_BASE_URL}/auth/me`,
+      {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+      },
+    );
+    mainState.currentUser = response.data;
+  }
 }

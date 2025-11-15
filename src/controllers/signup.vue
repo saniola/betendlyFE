@@ -60,6 +60,11 @@
 import { ref } from 'vue';
 import { signup } from '@/actions/signup';
 import { testEmail } from '@/helpers/test-email';
+import router from '@/router';
+
+if (localStorage.getItem('token')) {
+  router.push({ name: 'home' });
+}
 
 const valid = ref(false);
 const showPassword = ref(false);
