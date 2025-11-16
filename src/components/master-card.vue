@@ -65,12 +65,12 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
+import { defaultAvatar } from '@/config';
 import type { Master } from '@/types/master';
 
 const props = defineProps<{
   master: Master;
 }>();
-const defaultAvatar = new URL('@/assets/user.png', import.meta.url).href;
 const hours = ['10:00', '12:30', '15:00', '18:00'];
 </script>
 
