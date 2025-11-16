@@ -117,9 +117,9 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { fetchMember } from '@/actions/fetch-member';
+import { defaultAvatar } from '@/config';
 import { mainState } from '@/state';
 
-const defaultAvatar = new URL('@/assets/user.png', import.meta.url).href;
 const user = computed(() => mainState.user);
 const fullName = computed(() => `${user.value?.firstName} ${user.value?.lastName}`);
 const route = useRoute();

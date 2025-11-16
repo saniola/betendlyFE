@@ -11,12 +11,35 @@
             :class="$style.logo" />
         </RouterLink>
 
-        <div v-if="!isLoading">
-          <RouterLink
-            v-if="currentUser"
-            class="ms-2 text-white font-weight-medium"
-            :to="`/member/${currentUser.id}`"
-            v-text="`${props.currentUser?.firstName} ${props.currentUser?.lastName}`" />
+        <div
+          v-if="!isLoading"
+          :class="$style.actions">
+          <template v-if="currentUser">
+            <div :class="$style.user">
+              <img
+                height="30"
+                width="30"
+                :alt="`${currentUser?.firstName} ${currentUser?.lastName}`"
+                :class="$style.logo"
+                :src="currentUser.avatarUrl || defaultAvatar" />
+
+              <RouterLink
+                :class="[
+                  'text-white', 'font-weight-medium',
+                  $style.username,
+                ]"
+                :to="`/member/${currentUser.id}`"
+                v-text="`${currentUser?.firstName} ${currentUser?.lastName}`" />
+            </div>
+
+            <v-btn
+              color="white"
+              variant="outlined"
+              class="text-none ms-2"
+              @click="logout">
+              Log out
+            </v-btn>
+          </template>
 
           <template v-else>
             <v-btn
@@ -34,7 +57,7 @@
               variant="outlined"
               class="text-none ms-2"
               :to="{ name: 'login' }">
-              Login
+              Log in
             </v-btn>
           </template>
         </div>
@@ -45,9 +68,11 @@
 
 <script setup lang="ts">
 import { RouterLink, useRoute } from 'vue-router';
+import { logout } from '@/actions/logout';
+import { defaultAvatar } from '@/config';
 import type { CurrentUser } from '@/types/current-user';
 
-const props = defineProps<{
+defineProps<{
   currentUser: CurrentUser | null,
   isLoading: boolean,
 }>();
@@ -75,5 +100,25 @@ const route = useRoute();
 .logo {
   display: block;
   width: auto;
+}
+
+.actions,
+.user {
+  display: flex;
+  align-items: center;
+}
+
+.actions {
+  gap: .8rem;
+}
+
+.user {
+  gap: .4rem;
+}
+
+.username {
+  &:hover {
+    opacity: .8;
+  }
 }
 </style>
