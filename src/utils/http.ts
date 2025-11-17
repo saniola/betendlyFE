@@ -1,13 +1,14 @@
-import axios from 'axios';
+import axios from "axios";
 
-function createApi() {
-  const token = localStorage.getItem('token');
+export const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-  return axios.create({
-    headers: {
-      Authorization: token ? `Bearer ${token}` : undefined,
-    },
-  });
-}
-
-export const http = createApi();
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});

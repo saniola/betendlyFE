@@ -1,7 +1,6 @@
 import { setLoadingStatus } from '@/actions/set-loading-status';
-import { API_BASE_URL } from '@/config';
 import { mainState } from '@/state';
-import { http } from '@/utils/http';
+import { api } from '@/utils/http';
 
 // const mockedData = {
 //   id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -56,7 +55,7 @@ import { http } from '@/utils/http';
 export async function fetchMember(memberId: string) {
   setLoadingStatus(true);
 
-  const response = await http.get(`${API_BASE_URL}/member/${memberId}`);
+  const response = await api.get(`/member/${memberId}`);
 
   mainState.user = response.data;
 

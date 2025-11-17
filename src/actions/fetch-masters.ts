@@ -1,7 +1,6 @@
 import { setLoadingStatus } from '@/actions/set-loading-status';
-import { API_BASE_URL } from '@/config';
 import { mainState } from '@/state';
-import { http } from '@/utils/http';
+import { api } from '@/utils/http';
 
 // const masters = {
 //   items: [
@@ -37,7 +36,12 @@ import { http } from '@/utils/http';
 export async function fetchMasters() {
   setLoadingStatus(true);
 
-  const response = await http.get(`${API_BASE_URL}/masters?page=${mainState.currentPage}&pageSize=10`);
+  const response = await api.get(`/masters`, {
+  params: {
+    page: mainState.currentPage,
+    pageSize: 10,
+  },
+});
 
   mainState.masters = response.data.items;
   mainState.totalPages = response.data.total;

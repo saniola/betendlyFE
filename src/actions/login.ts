@@ -2,15 +2,14 @@ import axios from 'axios';
 import { createToast } from 'mosha-vue-toastify';
 import { fetchCurrentUser } from '@/actions/fetch-current-user';
 import { setLoadingStatus } from '@/actions/set-loading-status';
-import { API_BASE_URL } from '@/config';
 import router from '@/router';
 import type { LoginData } from '@/types/login';
-import { http } from '@/utils/http';
+import { api } from '@/utils/http';
 
 export async function login(data: LoginData) {
   setLoadingStatus(true);
   try {
-    const response = await http.post(`${API_BASE_URL}/auth/login`, data);
+   const response = await api.post(`/auth/login`, data);
     localStorage.setItem('token', response.data.accessToken);
     localStorage.setItem('tokenExpire', response.data.expiresAtUtc);
     localStorage.setItem('refreshToken', response.data.refreshToken);
