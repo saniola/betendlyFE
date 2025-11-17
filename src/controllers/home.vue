@@ -65,13 +65,13 @@ function onPageChange(page: number) {
   fetchMasters();
 }
 
-function onCityChange(city: string) {}
+function onCityChange(_city: string) {}
 
-function onTagChange(tag: string) {}
+function onTagChange(_tag: string) {}
 
-function onAlphabetChange(alphabet: string) {}
+function onAlphabetChange(_alphabet: string) {}
 
-function onRatingChange(rating: string) {}
+function onRatingChange(_rating: string) {}
 
 </script>
 
