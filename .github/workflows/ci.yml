@@ -1,0 +1,68 @@
+name: CI / Lint / Typecheck / Build
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      # ---------- Lint ----------
+      - name: Run ESLint
+        run: |
+          if npm run lint --silent; then
+            echo "ESLint passed"
+          else
+            echo "ESLint failed"
+            exit 1
+          fi
+
+      # ---------- Typecheck ----------
+      - name: Run TypeScript type check
+        run: |
+          if npm run type-check --silent; then
+            echo "Type-check passed"
+          else
+            echo "Type-check failed"
+            exit 1
+          fi
+
+      # ---------- Build ----------
+      - name: Build project
+        run: |
+          if npm run build --silent; then
+            echo "Build passed"
+          else
+            echo "Build failed"
+            exit 1
+          fi
+
+      # ---------- Post summary ----------
+      - name: Add PR comment with results
+        if: always()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          recreate: true
+          message: |
+            ## ✔ CI Summary
+
+            **ESLint:** ${{ job.status == 'success' && 'Passed' || 'Failed' }}
+            **Type-check:** completed
+            **Build:** completed
+
+            **Status:** `${{ job.status }}`
+
