@@ -36,8 +36,19 @@
           <v-row dense>
             <v-col
               v-if="user.master.address"
-              cols="12" md="6">
-              <v-icon icon="mdi-map-marker" start /> {{ user.master.address }}
+              cols="12" md="6"
+              class="d-flex">
+              <v-icon icon="mdi-map-marker" start />
+
+              <a
+                :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(user.master.address)}`"
+                target="_blank"
+                rel="noopener"
+                :class="[
+                  'text-body-2 d-flex align-center',
+                  $style.address,
+                ]"
+                v-text="user.master.address" />
             </v-col>
 
             <v-col
@@ -141,6 +152,14 @@ fetchMember(route.params.id as string);
     &:hover {
       opacity: 0.8;
     }
+  }
+}
+
+.address {
+  color: #000;
+
+  &:hover {
+    opacity: 0.8;
   }
 }
 </style>
