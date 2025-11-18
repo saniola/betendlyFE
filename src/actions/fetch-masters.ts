@@ -44,7 +44,7 @@ export async function fetchMasters() {
 });
 
   mainState.masters = response.data.items;
-  mainState.totalPages = response.data.total;
+  mainState.totalPages = Math.ceil(response.data.total / response.data.pageSize);
 
   // mainState.masters = masters.items;
   // mainState.totalPages = masters.total;
