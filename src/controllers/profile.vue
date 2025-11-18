@@ -112,7 +112,7 @@
                   <v-btn
                     color="primary"
                     type="button"
-                    @click="onClickBook">
+                    @click="bookAppointment">
                     Записатись
                   </v-btn>
                 </td>
@@ -139,7 +139,7 @@ const route = useRoute();
 
 fetchMember(route.params.id as string);
 
-function onClickBook() {
+function bookAppointment() {
   if (!mainState.currentUser) {
     router.push({ name: 'login' });
     return;
