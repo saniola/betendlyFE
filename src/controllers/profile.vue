@@ -111,7 +111,8 @@
                 <td>
                   <v-btn
                     color="primary"
-                    type="button">
+                    type="button"
+                    @click="bookAppointment">
                     Записатись
                   </v-btn>
                 </td>
@@ -129,6 +130,7 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { fetchMember } from '@/actions/fetch-member';
 import { defaultAvatar } from '@/config';
+import router from '@/router';
 import { mainState } from '@/state';
 
 const user = computed(() => mainState.user);
@@ -136,6 +138,15 @@ const fullName = computed(() => `${user.value?.firstName} ${user.value?.lastName
 const route = useRoute();
 
 fetchMember(route.params.id as string);
+
+function bookAppointment() {
+  if (!mainState.currentUser) {
+    router.push({ name: 'login' });
+    return;
+  }
+
+  alert('Booking functionality is not implemented yet.');
+}
 </script>
 
 <style lang="scss" module>
