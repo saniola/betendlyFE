@@ -36,8 +36,19 @@
           <v-row dense>
             <v-col
               v-if="user.master.address"
-              cols="12" md="6">
-              <v-icon icon="mdi-map-marker" start /> {{ user.master.address }}
+              cols="12" md="6"
+              class="d-flex">
+              <v-icon icon="mdi-map-marker" start />
+
+              <a
+                :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(user.master.address)}`"
+                target="_blank"
+                rel="noopener"
+                :class="[
+                  'text-body-2 d-flex align-center',
+                  $style.address,
+                ]"
+                v-text="user.master.address" />
             </v-col>
 
             <v-col
@@ -100,7 +111,8 @@
                 <td>
                   <v-btn
                     color="primary"
-                    type="button">
+                    type="button"
+                    @click="bookAppointment">
                     Записатись
                   </v-btn>
                 </td>
@@ -118,6 +130,7 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { fetchMember } from '@/actions/fetch-member';
 import { defaultAvatar } from '@/config';
+import router from '@/router';
 import { mainState } from '@/state';
 
 const user = computed(() => mainState.user);
@@ -125,6 +138,15 @@ const fullName = computed(() => `${user.value?.firstName} ${user.value?.lastName
 const route = useRoute();
 
 fetchMember(route.params.id as string);
+
+function bookAppointment() {
+  if (!mainState.currentUser) {
+    router.push({ name: 'login' });
+    return;
+  }
+
+  alert('Booking functionality is not implemented yet.');
+}
 </script>
 
 <style lang="scss" module>
@@ -141,6 +163,14 @@ fetchMember(route.params.id as string);
     &:hover {
       opacity: 0.8;
     }
+  }
+}
+
+.address {
+  color: #000;
+
+  &:hover {
+    opacity: 0.8;
   }
 }
 </style>
