@@ -36,6 +36,19 @@
           </li>
         </ul>
 
+        <p
+          v-if="master.address"
+          :class="$style.address">
+          <v-icon icon="mdi-map-marker" start />
+
+          <a
+            :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(master.address)}`"
+            target="_blank"
+            rel="noopener"
+            class="text-body-2 d-flex align-center"
+            v-text="master.address" />
+        </p>
+
         <div :class="$style.rating">
           <v-rating
             :model-value="4.7"
@@ -50,14 +63,6 @@
             :class="$style.feedbacks"
             v-text="`(12 відгуків)`"/>
         </div>
-
-        <ul :class="$style.hours">
-          <li
-            v-for="hour in hours"
-            :key="hour"
-            :class="$style.hour"
-            v-text="hour" />
-        </ul>
       </div>
     </v-card>
   </li>
@@ -71,7 +76,6 @@ import type { Master } from '@/types/master';
 const props = defineProps<{
   master: Master;
 }>();
-const hours = ['10:00', '12:30', '15:00', '18:00'];
 </script>
 
 <style module lang="scss">
@@ -131,6 +135,20 @@ const hours = ['10:00', '12:30', '15:00', '18:00'];
   padding: 3px;
 }
 
+.address {
+  align-items: center;
+  display: flex;
+  margin-bottom: 8px;
+
+  a {
+    color: #000;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
 .rating {
   align-items: center;
   display: flex;
@@ -140,20 +158,6 @@ const hours = ['10:00', '12:30', '15:00', '18:00'];
 
 .feedbacks {
   color: gray;
-}
-
-.hours {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.hour {
-  border: 1px solid #3b5fff;
-  border-radius: 3px;
-  color: #3b5fff;
-  line-height: 1;
-  padding: 4px 8px;
 }
 
 @media (min-width: 768px) {
