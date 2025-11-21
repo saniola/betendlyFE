@@ -1,0 +1,83 @@
+<template>
+  <v-list-item>
+    <v-list-item-title>
+      {{ isMaster ? appointment.clientName : appointment.masterName }} — {{ appointment.serviceName }}
+    </v-list-item-title>
+
+    <v-list-item-subtitle>
+      {{ formatDate(appointment.startUtc) }} 
+ 
+      ({{ formatTime(appointment.startUtc) }} – {{ formatTime(appointment.endUtc) }})
+    </v-list-item-subtitle>
+
+    <template #append>
+      <div :class="$style.actions">
+        <template v-if="isMaster && appointment.status === 0">
+          <v-btn
+            size="small"
+            color="green"
+            @click="$emit('accept', appointment.id)"
+            v-text="'Прийняти'" />
+
+          <v-btn
+            size="small"
+            color="red"
+            @click="$emit('reject', appointment.id)"
+            v-text="'Відхилити'" />
+        </template>
+
+        <template v-else-if="appointment.status === 1">
+          <v-btn
+            size="small"
+            color="blue"
+            @click="$emit('add-to-google-calendar', appointment)"
+            v-text="'Додати в Google Calendar'" />
+
+          <v-btn
+            size="small"
+            color="red"
+            @click="$emit('cancel', appointment.id)"
+            v-text="'Скасувати'" />
+        </template>
+      </div>
+    </template>
+  </v-list-item>
+</template>
+
+<script lang="ts" setup>
+import type { Appointment } from '@/types/appointment';
+
+defineProps<{
+  appointment: Appointment;
+  isMaster: boolean;
+}>();
+
+defineEmits<{
+  (e: 'accept', appointment: string): void;
+  (e: 'add-to-google-calendar', appointment: Appointment): void;
+  (e: 'cancel', appointment: string): void;
+  (e: 'reject', appointment: string): void;
+}>();
+
+function formatDate(date: string) {
+  return new Date(date).toLocaleDateString("uk-UA", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+function formatTime(date: string) {
+  return new Date(date).toLocaleTimeString("uk-UA", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+</script>
+
+<style module lang="scss">
+.actions {
+  display: flex;
+  gap: 8px;
+}
+</style>
