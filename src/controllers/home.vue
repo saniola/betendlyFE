@@ -1,11 +1,10 @@
 <template>
   <Filters
     :cities
+    :filter="mainState.filter"
     :skills
     @city-change="onCityChange"
-    @tag-change="onTagChange"
-    @alphabet-change="onAlphabetChange"
-    @rating-change="onRatingChange" />
+    @skill-change="onSkillChange" />
 
   <ul :class="$style.component">
     <MasterCard
@@ -26,38 +25,29 @@
 <script setup lang="ts">
 import { fetchMasters } from '@/actions/fetch-masters';
 import { setCurrentPage } from '@/actions/set-current-page';
+import { setFilterValue } from '@/actions/set-filter-value';  
 import Filters from '@/components/filters.vue';
 import MasterCard from '@/components/master-card.vue';
 import { mainState } from '@/state';
 import type { Master } from '@/types/master';
-import { computed } from 'vue';
+import { onMounted, ref } from 'vue';
 
 fetchMasters();
+const cities = ref(['Всі міста']);
+const skills = ref(['Всі навички']);
 
-const cities = computed(() => {
-  const arr: string[] = ['Всі міста'];
-
+onMounted(() => {
   mainState.masters.forEach((item: Master) => {
-    if (item.address && !arr.includes(item.address)) {
-      arr.push(item.address);
+    if (item.city && !cities.value.includes(item.city)) {
+      cities.value.push(item.city);
     }
-  });
 
-  return arr;
-});
-
-const skills = computed(() => {
-  const arr: string[] = ['Всі навички'];
-
-  mainState.masters.forEach((item: Master) => {
     item.skills.forEach((skill: string) => {
-      if (!arr.includes(skill)) {
-        arr.push(skill);
+      if (!skills.value.includes(skill)) {
+        skills.value.push(skill);
       }
     });
   });
-
-  return arr;
 });
 
 function onPageChange(page: number) {
@@ -65,14 +55,15 @@ function onPageChange(page: number) {
   fetchMasters();
 }
 
-function onCityChange(_city: string) {}
+function onCityChange(city: string) {
+  setFilterValue('address', city === 'Всі міста' ? null : city);
+  fetchMasters();
+}
 
-function onTagChange(_tag: string) {}
-
-function onAlphabetChange(_alphabet: string) {}
-
-function onRatingChange(_rating: string) {}
-
+function onSkillChange(skill: string) {
+  setFilterValue('skill', skill === 'Всі навички' ? null : skill);
+  fetchMasters();
+}
 </script>
 
 <style module lang="scss">

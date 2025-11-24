@@ -46,23 +46,23 @@
           class="mb-4"
           v-text="user.master.about" />
 
-        <template v-if="user.master.address || user.master.yearsExperience">
+        <template v-if="user.master.city || user.master.yearsExperience">
           <v-row dense>
             <v-col
-              v-if="user.master.address"
+              v-if="user.master.city"
               cols="12" md="6"
               class="d-flex">
               <v-icon icon="mdi-map-marker" start />
 
               <a
-                :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(user.master.address)}`"
+                :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`"
                 target="_blank"
                 rel="noopener"
                 :class="[
                   'text-body-2 d-flex align-center',
                   $style.address,
                 ]"
-                v-text="user.master.address" />
+                v-text="fullAddress" />
             </v-col>
 
             <v-col
@@ -176,6 +176,7 @@ import { mainState } from '@/state';
 const user = computed(() => mainState.user);
 const fullName = computed(() => `${user.value?.firstName} ${user.value?.lastName}`);
 const route = useRoute();
+const fullAddress = computed(() => `${user.value?.master?.city}${user.value?.master?.address ? ', ' + user.value.master.address : ''}`);
 
 fetchMember(route.params.id as string);
 

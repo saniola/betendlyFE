@@ -5,7 +5,6 @@
     <v-row dense>
       <v-col cols="12" sm="6" md="3">
         <v-select
-          v-model="filters.tag"
           density="comfortable"
           hide-details
           item-title="value"
@@ -13,17 +12,18 @@
           label="Всі навички"
           variant="outlined"
           :items="skills"
+          :value ="filter.skill"
           @update:model-value="$emit('skill-change', $event)" />
       </v-col>
 
       <v-col cols="12" sm="6" md="3">
         <v-select
-          v-model="filters.city"
           density="comfortable"
           hide-details
           label="Місто"
           variant="outlined"
           :items="cities"
+          :value="filter.address"
           @update:model-value="$emit('city-change', $event)" />
       </v-col>
     </v-row>
@@ -31,13 +31,16 @@
 </template>
 
 <script setup lang="ts">
+import type { Filter } from '@/types/filter';
+
 defineProps<{
   cities: string[];
+  filter: Filter;
   skills: string[];
 }>();
 
 defineEmits<{
-  (e: 'tag-change', value: string): void;
+  (e: 'skill-change', value: string): void;
   (e: 'city-change', value: string): void;
 }>();
 </script>
