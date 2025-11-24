@@ -1,7 +1,7 @@
 <template>
   <Filters
     :cities
-    :tags
+    :skills
     @city-change="onCityChange"
     @tag-change="onTagChange"
     @alphabet-change="onAlphabetChange"
@@ -35,7 +35,7 @@ import { computed } from 'vue';
 fetchMasters();
 
 const cities = computed(() => {
-  const arr: string[] = [];
+  const arr: string[] = ['Всі міста'];
 
   mainState.masters.forEach((item: Master) => {
     if (item.address && !arr.includes(item.address)) {
@@ -46,8 +46,8 @@ const cities = computed(() => {
   return arr;
 });
 
-const tags = computed(() => {
-  const arr: string[] = [];
+const skills = computed(() => {
+  const arr: string[] = ['Всі навички'];
 
   mainState.masters.forEach((item: Master) => {
     item.skills.forEach((skill: string) => {
