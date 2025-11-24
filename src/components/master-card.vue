@@ -37,16 +37,16 @@
         </ul>
 
         <p
-          v-if="master.address"
+          v-if="master.city"
           :class="$style.address">
           <v-icon icon="mdi-map-marker" start />
 
           <a
-            :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(master.address)}`"
+            :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`"
             target="_blank"
             rel="noopener"
             class="text-body-2 d-flex align-center"
-            v-text="master.address" />
+            v-text="fullAddress" />
         </p>
 
         <div :class="$style.rating">
@@ -69,6 +69,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
 import { defaultAvatar } from '@/config';
 import type { Master } from '@/types/master';
@@ -76,6 +77,8 @@ import type { Master } from '@/types/master';
 const props = defineProps<{
   master: Master;
 }>();
+
+const fullAddress = computed(() => `${props.master.city}${props.master.address ? ', ' + props.master.address : ''}`);
 </script>
 
 <style module lang="scss">

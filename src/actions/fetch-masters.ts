@@ -38,6 +38,8 @@ export async function fetchMasters() {
 
   const response = await api.get(`/masters`, {
   params: {
+    address: mainState.filter.address,
+    skill: mainState.filter.skill,
     page: mainState.currentPage,
     pageSize: 10,
   },

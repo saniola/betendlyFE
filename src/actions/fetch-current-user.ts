@@ -1,8 +1,10 @@
-import { api } from "@/utils/http";
+import { setLoadingStatus } from '@/actions/set-loading-status';
 import { updateToken } from "@/helpers/update-token";
 import { mainState } from "@/state";
+import { api } from "@/utils/http";
 
 export async function fetchCurrentUser() {
+  setLoadingStatus(true);
   const token = localStorage.getItem("token");
   if (!token) return;
 
@@ -10,4 +12,5 @@ export async function fetchCurrentUser() {
 
   const response = await api.get("/auth/me");
   mainState.currentUser = response.data;
+  setLoadingStatus(false);
 }
