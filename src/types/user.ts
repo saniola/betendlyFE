@@ -14,6 +14,7 @@ interface Master {
   yearsExperience: number;
   address: string;
   services: Service[];
+  city: string;
 }
 
 export interface User {

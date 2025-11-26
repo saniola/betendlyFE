@@ -5,45 +5,25 @@
     <v-row dense>
       <v-col cols="12" sm="6" md="3">
         <v-select
-          v-model="filters.tag"
           density="comfortable"
           hide-details
-          label="Всі теги"
+          item-title="value"
+          item-value="key"
+          label="Всі навички"
           variant="outlined"
-          :items="tags"
-          @update:model-value="$emit('tag-change', $event)" />
+          :items="skills"
+          :value ="filter.skill"
+          @update:model-value="$emit('skill-change', $event)" />
       </v-col>
 
       <v-col cols="12" sm="6" md="3">
         <v-select
-          v-model="filters.alphabet"
-          density="comfortable"
-          hide-details
-          label="Алфавіт"
-          variant="outlined"
-          :items="alphabetOptions"
-          @update:model-value="$emit('alphabet-change', $event)" />
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-select
-          v-model="filters.rating"
-          density="comfortable"
-          hide-details
-          label="Рейтинг"
-          variant="outlined"
-          :items="ratingOptions"
-          @update:model-value="$emit('rating-change', $event)" />
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-select
-          v-model="filters.city"
           density="comfortable"
           hide-details
           label="Місто"
           variant="outlined"
           :items="cities"
+          :value="filter.address"
           @update:model-value="$emit('city-change', $event)" />
       </v-col>
     </v-row>
@@ -51,21 +31,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import type { Filter } from '@/types/filter';
 
-const props = defineProps<{
+defineProps<{
   cities: string[];
-  tags: string[];
+  filter: Filter;
+  skills: string[];
 }>();
 
-const tags = ['Всі теги', ...props.tags];
-const alphabetOptions = ['A→Я', 'Я→A']
-const ratingOptions = ['Рейтинг ⬆️', 'Рейтинг ⬇️']
-const cities = ['Всі міста', ...props.cities];
-const filters = ref({
-  tag: tags[0],
-  alphabet: alphabetOptions[0],
-  rating: ratingOptions[0],
-  city: cities[0],
-});
+defineEmits<{
+  (e: 'skill-change', value: string): void;
+  (e: 'city-change', value: string): void;
+}>();
 </script>
