@@ -11,12 +11,12 @@
 
       <div :class="$style.info">
         <h3 :class="$style.name">
-          <RouterLink
-            :to="`/member/${master.userId}`"
-            v-text="master.fullName" />
+          <RouterLink :to="`/member/${master.userId}`">
+            {{ master.fullName }}
+          </RouterLink>
         </h3>
 
-        <p 
+        <p
           v-if="master.about"
           :class="$style.about"
           v-text="master.about" />
@@ -56,7 +56,7 @@
             readonly
             color="amber"
             size="24" />
-          
+
           <span v-text="4.7" />
 
           <span
