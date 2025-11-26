@@ -28,8 +28,9 @@
                   'text-white', 'font-weight-medium',
                   $style.username,
                 ]"
-                :to="`/member/${currentUser.id}`"
-                v-text="`${currentUser?.firstName} ${currentUser?.lastName}`" />
+                :to="`/member/${currentUser.id}`">
+                {{ `${currentUser?.firstName} ${currentUser?.lastName}` }}
+              </RouterLink>
             </div>
 
             <v-btn

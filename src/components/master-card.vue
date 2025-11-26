@@ -11,12 +11,12 @@
 
       <div :class="$style.info">
         <h3 :class="$style.name">
-          <RouterLink
-            :to="`/member/${master.userId}`"
-            v-text="master.fullName" />
+          <RouterLink :to="`/member/${master.userId}`">
+            {{ master.fullName }}
+          </RouterLink>
         </h3>
 
-        <p 
+        <p
           v-if="master.about"
           :class="$style.about"
           v-text="master.about" />
@@ -36,6 +36,19 @@
           </li>
         </ul>
 
+        <p
+          v-if="master.city"
+          :class="$style.address">
+          <v-icon icon="mdi-map-marker" start />
+
+          <a
+            :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`"
+            target="_blank"
+            rel="noopener"
+            class="text-body-2 d-flex align-center"
+            v-text="fullAddress" />
+        </p>
+
         <div :class="$style.rating">
           <v-rating
             :model-value="4.7"
@@ -43,27 +56,20 @@
             readonly
             color="amber"
             size="24" />
-          
+
           <span v-text="4.7" />
 
           <span
             :class="$style.feedbacks"
             v-text="`(12 відгуків)`"/>
         </div>
-
-        <ul :class="$style.hours">
-          <li
-            v-for="hour in hours"
-            :key="hour"
-            :class="$style.hour"
-            v-text="hour" />
-        </ul>
       </div>
     </v-card>
   </li>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
 import { defaultAvatar } from '@/config';
 import type { Master } from '@/types/master';
@@ -71,7 +77,8 @@ import type { Master } from '@/types/master';
 const props = defineProps<{
   master: Master;
 }>();
-const hours = ['10:00', '12:30', '15:00', '18:00'];
+
+const fullAddress = computed(() => `${props.master.city}${props.master.address ? ', ' + props.master.address : ''}`);
 </script>
 
 <style module lang="scss">
@@ -131,6 +138,20 @@ const hours = ['10:00', '12:30', '15:00', '18:00'];
   padding: 3px;
 }
 
+.address {
+  align-items: center;
+  display: flex;
+  margin-bottom: 8px;
+
+  a {
+    color: #000;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
 .rating {
   align-items: center;
   display: flex;
@@ -140,20 +161,6 @@ const hours = ['10:00', '12:30', '15:00', '18:00'];
 
 .feedbacks {
   color: gray;
-}
-
-.hours {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.hour {
-  border: 1px solid #3b5fff;
-  border-radius: 3px;
-  color: #3b5fff;
-  line-height: 1;
-  padding: 4px 8px;
 }
 
 @media (min-width: 768px) {
