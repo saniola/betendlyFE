@@ -5,8 +5,8 @@
     </v-list-item-title>
 
     <v-list-item-subtitle>
-      {{ formatDate(appointment.startUtc) }} 
- 
+      {{ formatDate(appointment.startUtc) }}
+
       ({{ formatTime(appointment.startUtc) }} – {{ formatTime(appointment.endUtc) }})
     </v-list-item-subtitle>
 
@@ -16,28 +16,32 @@
           <v-btn
             size="small"
             color="green"
-            @click="$emit('accept', appointment.id)"
-            v-text="'Прийняти'" />
+            @click="$emit('accept', appointment.id)">
+            Прийняти
+          </v-btn>
 
           <v-btn
             size="small"
             color="red"
-            @click="$emit('reject', appointment.id)"
-            v-text="'Відхилити'" />
+            @click="$emit('reject', appointment.id)">
+            Відхилити
+          </v-btn>
         </template>
 
         <template v-else-if="appointment.status === 1">
           <v-btn
             size="small"
             color="blue"
-            @click="$emit('add-to-google-calendar', appointment)"
-            v-text="'Додати в Google Calendar'" />
+            @click="$emit('add-to-google-calendar', appointment)">
+            Додати в Google Calendar
+          </v-btn>
 
           <v-btn
             size="small"
             color="red"
-            @click="$emit('cancel', appointment.id)"
-            v-text="'Скасувати'" />
+            @click="$emit('cancel', appointment.id)">
+            Скасувати
+          </v-btn>
         </template>
       </div>
     </template>

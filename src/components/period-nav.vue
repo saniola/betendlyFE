@@ -3,15 +3,17 @@
     <v-btn
       variant="outlined"
       :disabled="isPrevDisabled"
-      v-text="'Попередній'"
-      @click="$emit('prev-month')" />
+      @click="$emit('prev-month')">
+      Попередній
+    </v-btn>
 
-    <strong v-text="formattedPeriod" />
+    <strong>{{ formattedPeriod }}</strong>
 
     <v-btn
       variant="outlined"
-      v-text="'Наступний'"
-      @click="$emit('next-month')" />
+      @click="$emit('next-month')">
+      Наступний
+    </v-btn>
   </div>
 </template>
 

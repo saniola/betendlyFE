@@ -1,6 +1,8 @@
 import { setLoadingStatus } from '@/actions/set-loading-status';
 import { mainState } from '@/state';
 import { api } from '@/utils/http';
+import { buildAvatarUrl } from '@/helpers/avatar-url';
+import { normalizeYearsExperience } from '@/helpers/master-profile';
 
 // const mockedData = {
 //   id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -56,8 +58,10 @@ export async function fetchMember(memberId: string) {
   setLoadingStatus(true);
 
   const response = await api.get(`/member/${memberId}`);
-
-  mainState.user = response.data;
+  const user = response.data;
+  user.avatarUrl = buildAvatarUrl(user.avatarUrl);
+  user.master = normalizeYearsExperience(user.master);
+  mainState.user = user;
 
   setLoadingStatus(false);
 }
