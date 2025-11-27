@@ -1,4 +1,4 @@
-interface Service {
+export interface ProfileService {
   id: string;
   name: string;
   price: number;
@@ -8,13 +8,13 @@ interface Service {
   updatedAtUtc: string;
 }
 
-interface Master {
-  about: string;
-  skills: string[];
-  yearsExperience: number;
-  address: string;
-  services: Service[];
-  city: string;
+export interface ProfileMaster {
+  about?: string;
+  skills?: string[];
+  yearsExperience?: number | null;
+  address?: string;
+  services?: ProfileService[];
+  city?: string;
 }
 
 export interface User {
@@ -25,5 +25,5 @@ export interface User {
   phone: string;
   avatarUrl: string;
   isMaster: boolean;
-  master?: Master;
+  master?: ProfileMaster;
 }

@@ -18,8 +18,9 @@
 
         <p
           v-if="master.about"
-          :class="$style.about"
-          v-text="master.about" />
+          :class="$style.about">
+          {{ master.about }}
+        </p>
 
         <ul
           v-if="master.skills && master.skills.length"
@@ -45,8 +46,9 @@
             :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`"
             target="_blank"
             rel="noopener"
-            class="text-body-2 d-flex align-center"
-            v-text="fullAddress" />
+            class="text-body-2 d-flex align-center">
+            {{ fullAddress }}
+          </a>
         </p>
 
         <div :class="$style.rating">
@@ -57,11 +59,12 @@
             color="amber"
             size="24" />
 
-          <span v-text="4.7" />
+          <span>4.7</span>
 
           <span
-            :class="$style.feedbacks"
-            v-text="`(12 відгуків)`"/>
+            :class="$style.feedbacks">
+            (12 відгуків)
+          </span>
         </div>
       </div>
     </v-card>
