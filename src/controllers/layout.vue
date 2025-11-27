@@ -17,9 +17,9 @@
         src="@/assets/loader.gif"
         width="50" />
 
-        <p
-          :class="$style.text"
-          v-text="'Please wait. Loading...'" />
+        <p :class="$style.text">
+          Please wait. Loading...
+        </p>
     </div>
 
     <Footer />

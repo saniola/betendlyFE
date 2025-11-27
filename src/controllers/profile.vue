@@ -17,34 +17,46 @@
         </v-col>
 
         <v-col class="pl-4">
-          <h2
-            class="text-h5 mb-1"
-            v-text="fullName" />
+          <h2 class="text-h5 mb-1">
+            {{ fullName }}
+          </h2>
 
           <p :class="$style.contact">
             <a
               :href="`mailto:${user.email}`"
-              class="text-body-2 text-medium-emphasis mb-0"
-              v-text="user.email" />
+            class="text-body-2 text-medium-emphasis mb-0">
+            {{ user.email }}
+          </a>
           </p>
-          
+
           <p
             v-if="user.phone"
             :class="$style.contact">
             <a
               :href="`tel:${user.phone}`"
-              class="text-body-2 text-medium-emphasis mb-0"
-              v-text="user.phone" />
+            class="text-body-2 text-medium-emphasis mb-0">
+            {{ user.phone }}
+          </a>
           </p>
         </v-col>
       </v-row>
 
+      <v-btn
+        v-if="mainState.currentUser?.id === user.id"
+        color="primary"
+        variant="elevated"
+        class="mt-4 align-self-start"
+        prepend-icon="mdi-pencil"
+        :to="{ name: 'profile-edit', params: { id: user.id } }">
+        Редагувати профіль
+      </v-btn>
+
       <v-divider class="my-4" />
 
       <template v-if="user.isMaster && user.master">
-        <p
-          class="mb-4"
-          v-text="user.master.about" />
+        <p class="mb-4">
+          {{ user.master.about }}
+        </p>
 
         <template v-if="user.master.city || user.master.yearsExperience">
           <v-row dense>
@@ -61,8 +73,9 @@
                 :class="[
                   'text-body-2 d-flex align-center',
                   $style.address,
-                ]"
-                v-text="fullAddress" />
+                ]">
+                {{ fullAddress }}
+              </a>
             </v-col>
 
             <v-col
@@ -71,7 +84,7 @@
               <v-icon
                 icon="mdi-briefcase"
                 start />
-                
+
               Досвід: {{ user.master.yearsExperience }} років
             </v-col>
           </v-row>
@@ -80,9 +93,9 @@
         </template>
 
         <template v-if="user.master.skills?.length">
-          <h3
-            class="text-h6 mb-2"
-            v-text="'Навички'" />
+          <h3 class="text-h6 mb-2">
+            Навички
+          </h3>
 
           <div :class="$style.skills">
             <v-chip
@@ -99,9 +112,9 @@
         </template>
 
         <template v-if="user.master.services?.length">
-          <h3
-            class="text-h6 mb-2"
-            v-text="'Послуги'" />
+          <h3 class="text-h6 mb-2">
+            Послуги
+          </h3>
 
           <v-table>
             <thead>
@@ -118,9 +131,7 @@
                   class="text-left"
                   v-text="'Тривалість'" />
 
-                <th
-                  class="text-left"
-                  v-text="'Ціна'" />
+                <th class="text-left">Ціна</th>
 
                 <th />
               </tr>
@@ -130,20 +141,21 @@
               <tr
                 v-for="service in user.master.services"
                 :key="service.id">
-                <td v-text="service.name" />
+                <td>{{ service.name }}</td>
 
-                <td v-text="service.description" />
+                <td>{{ service.description }}</td>
 
-                <td v-text="`${service.durationMinutes} хв`" />
+                <td>{{ `${service.durationMinutes} хв` }}</td>
 
-                <td v-text="`${service.price} грн`" />
+                <td>{{ `${service.price} грн` }}</td>
 
                 <td>
                   <v-btn
                     color="primary"
                     type="button"
-                    @click="bookAppointment"
-                    v-text="'Записатись'" />
+                    @click="bookAppointment">
+                    Записатись
+                  </v-btn>
                 </td>
               </tr>
             </tbody>
@@ -154,9 +166,9 @@
       <template v-if="mainState.currentUser?.id === user.id">
         <v-divider class="my-4" />
 
-        <h2
-          class="text-h5 mb-1"
-          v-text="'Ваші записи'" />
+        <h2 class="text-h5 mb-1">
+          Ваші записи
+        </h2>
 
         <AppointmentsList />
       </template>

@@ -49,6 +49,8 @@ export default tseslint.config(
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'vue/multi-word-component-names': 'off',
+      'vue/no-v-text-v-html-on-component': 'off',
+      'vue/html-self-closing': 'off',
     },
   },
 );

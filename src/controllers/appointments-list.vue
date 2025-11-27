@@ -1,6 +1,6 @@
 <template>
   <div class="pa-4">
-    <PeriodNav 
+    <PeriodNav
       :currentMonth="currentMonth"
       :is-prev-disabled
       @next-month="onNextClick"
@@ -22,8 +22,9 @@
 
     <p
       v-else
-      :class="$style.empty"
-      v-text="'Немає записів на цей період'" />
+      :class="$style.empty">
+      Немає записів на цей період
+    </p>
 
     <PeriodNav
       :currentMonth="currentMonth"
@@ -81,7 +82,7 @@ function onNextClick() {
   const nextMonth = new Date(periodStart.value);
   nextMonth.setMonth(nextMonth.getMonth() + 1);
 
-  periodStart.value = startOfMonth(nextMonth); 
+  periodStart.value = startOfMonth(nextMonth);
   periodEnd.value = endOfMonth(nextMonth);
   fetchAppointments(periodStart.value, periodEnd.value);
 }

@@ -12,35 +12,39 @@
             width="120" />
         </RouterLink>
 
-        <p
-          :class="$style.copy"
-          v-text="'© 2025 BeTendly. Всі права захищено.'" />
+        <p :class="$style.copy">
+          © 2025 BeTendly. Всі права захищено.
+        </p>
       </div>
 
       <div :class="$style.contacts">
-        <p
-          :class="$style.title"
-          v-text="'Контакти'" />
+        <p :class="$style.title">
+          Контакти
+        </p>
 
         <ul :class="$style.contactList">
           <li
             v-for="contact in contacts"
             :key="contact.value"
             :class="$style.contactItem">
-            <span :class="$style.label" v-text="`${contact.label}:`" />
+            <span :class="$style.label">
+              {{ `${contact.label}:` }}
+            </span>
 
             <a
               v-if="contact.href"
               :href="contact.href"
               :class="$style.valueLink"
               rel="noopener"
-              target="_blank"
-              v-text="contact.value" />
+              target="_blank">
+              {{ contact.value }}
+            </a>
 
             <span
               v-else
-              :class="$style.value"
-              v-text="contact.value" />
+              :class="$style.value">
+              {{ contact.value }}
+            </span>
           </li>
         </ul>
       </div>

@@ -1,6 +1,9 @@
 import { setLoadingStatus } from '@/actions/set-loading-status';
 import { mainState } from '@/state';
 import { api } from '@/utils/http';
+import { buildAvatarUrl } from '@/helpers/avatar-url';
+import { normalizeYearsExperience } from '@/helpers/master-profile';
+import type { Master } from '@/types/master';
 
 // const masters = {
 //   items: [
@@ -45,7 +48,10 @@ export async function fetchMasters() {
   },
 });
 
-  mainState.masters = response.data.items;
+  mainState.masters = response.data.items.map((master: Master) => ({
+    ...normalizeYearsExperience(master),
+    avatarUrl: buildAvatarUrl(master.avatarUrl),
+  }));
   mainState.totalPages = Math.ceil(response.data.total / response.data.pageSize);
 
   // mainState.masters = masters.items;
