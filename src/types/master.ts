@@ -3,6 +3,8 @@ export interface Master {
   address?: string;
   avatarUrl?: string;
   city?: string;
+  yearsExperience?: number | null;
+  experienceYears?: number | null;
   feedbacksCount?: number;
   fullName: string;
   hours: string[];
