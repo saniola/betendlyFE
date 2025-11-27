@@ -3,11 +3,9 @@ type ExperienceFields = {
   experienceYears?: number | null;
 };
 
-type AnyMaster = ExperienceFields & Record<string, unknown>;
-
-export function normalizeYearsExperience<T extends AnyMaster | null | undefined>(
+export function normalizeYearsExperience<T extends ExperienceFields | null | undefined>(
   master: T,
-) {
+): T {
   if (!master) return master;
 
   const years = (master.yearsExperience ?? master.experienceYears ?? null) as number | null;
@@ -15,12 +13,12 @@ export function normalizeYearsExperience<T extends AnyMaster | null | undefined>
   return {
     ...master,
     yearsExperience: years,
-  };
+  } as T;
 }
 
-export function withExperienceYearsPayload<T extends AnyMaster | null | undefined>(
+export function withExperienceYearsPayload<T extends ExperienceFields | null | undefined>(
   master: T,
-) {
+): T {
   if (!master) return master;
 
   const years = (master.yearsExperience ?? master.experienceYears ?? null) as number | null;
@@ -29,6 +27,6 @@ export function withExperienceYearsPayload<T extends AnyMaster | null | undefine
     ...master,
     yearsExperience: years,
     experienceYears: years,
-  };
+  } as T;
 }
 
