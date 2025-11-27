@@ -119,9 +119,18 @@
           <v-table>
             <thead>
               <tr>
-                <th class="text-left">Назва</th>
-                <th class="text-left">Опис</th>
-                <th class="text-left">Тривалість</th>
+                <th
+                  class="text-left"
+                  v-text="'Назва'" />
+
+                <th
+                  class="text-left"
+                  v-text="'Опис'" />
+
+                <th
+                  class="text-left"
+                  v-text="'Тривалість'" />
+
                 <th class="text-left">Ціна</th>
 
                 <th />
@@ -133,8 +142,11 @@
                 v-for="service in user.master.services"
                 :key="service.id">
                 <td>{{ service.name }}</td>
+
                 <td>{{ service.description }}</td>
+
                 <td>{{ `${service.durationMinutes} хв` }}</td>
+
                 <td>{{ `${service.price} грн` }}</td>
 
                 <td>
