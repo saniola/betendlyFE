@@ -48,8 +48,9 @@
 
 <script setup lang="ts">
 import { resetPassword } from '@/actions/reset-password';
+import { setLoadingStatus } from '@/actions/set-loading-status';
 import router from '@/router';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -83,5 +84,9 @@ async function onSubmit() {
     // handled inside action
   }
 }
+
+onMounted(() => {
+  setLoadingStatus(false);
+});
 </script>
 
