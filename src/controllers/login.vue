@@ -29,23 +29,34 @@
         :type="showPassword ? 'text' : 'password'"
         @click:append="showPassword = !showPassword" />
 
-      <v-btn
-        block
-        class="mt-4"
-        color="primary"
-        type="submit"
-        :disabled="!valid">
-        Log In
-      </v-btn>
+      <div class="d-flex flex-column gap-4">
+        <v-btn
+          block
+          class="mt-4"
+          color="primary"
+          type="submit"
+          :disabled="!valid">
+          Log In
+        </v-btn>
+
+        <v-btn
+          class="text-none"
+          variant="text"
+          @click="onForgotPassword">
+          Забули пароль?
+        </v-btn>
+      </div>
     </v-form>
   </v-card>
 </template>
 
 <script setup lang="ts">
 import { login } from '@/actions/login';
+import { forgotPassword } from '@/actions/forgot-password';
 import { testEmail } from '@/helpers/test-email';
 import router from '@/router';
 import { ref } from 'vue';
+import { createToast } from 'mosha-vue-toastify';
 
 if (localStorage.getItem('token')) {
   router.push({ name: 'home' });
@@ -69,6 +80,21 @@ function onSubmit() {
   };
 
   login(data);
+}
+
+function onForgotPassword() {
+  if (!email.value) {
+    createToast('Будь ласка, введіть email', { type: 'warning' });
+    return;
+  }
+
+  const validationResult = rules.email(email.value);
+  if (validationResult !== true) {
+    createToast(typeof validationResult === 'string' ? validationResult : 'Некоректний email', { type: 'warning' });
+    return;
+  }
+
+  forgotPassword(email.value);
 }
 </script>
 
