@@ -4,8 +4,10 @@
       :current-user="mainState.currentUser"
       :is-loading="mainState.isLoading" />
 
-    <div class="container">
-      <slot />
+    <div :class="$style.content">
+      <div class="container">
+        <slot />
+      </div>
     </div>
 
     <div
@@ -35,9 +37,17 @@ import { mainState } from '@/state';
 <style module lang="scss">
 .component {
   background-color: #fff;
-  height: 100%;
+  min-height: 100vh;
   padding-bottom: 30px;
   padding-top: 52px;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  width: 100%;
+  padding-top: 16px;
 }
 
 .loader {

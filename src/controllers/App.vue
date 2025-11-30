@@ -10,3 +10,10 @@ import Layout from '@/controllers/layout.vue';
 
 fetchCurrentUser();
 </script>
+
+<style>
+body {
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+</style>
