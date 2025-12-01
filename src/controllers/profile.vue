@@ -151,6 +151,7 @@
 
                 <td>
                   <v-btn
+                    v-if="mainState.currentUser?.id !== user.id"
                     color="primary"
                     type="button"
                     @click="bookAppointment(service)">

@@ -6,7 +6,9 @@
     @city-change="onCityChange"
     @skill-change="onSkillChange" />
 
-  <ul :class="$style.component">
+  <ul
+    v-if="mainState.masters.length"
+    :class="$style.component">
     <MasterCard
       v-for="(master, index) in mainState.masters"
       :key="index"
@@ -20,6 +22,10 @@
       :length="mainState.totalPages"
       @update:model-value="onPageChange" />
   </ul>
+
+  <p v-else class="text-center mt-8">
+    Майстрів не знайдено
+  </p>
 </template>
 
 <script setup lang="ts">
@@ -30,13 +36,13 @@ import Filters from '@/components/filters.vue';
 import MasterCard from '@/components/master-card.vue';
 import { mainState } from '@/state';
 import type { Master } from '@/types/master';
-import { onMounted, ref } from 'vue';
+import { onBeforeUnmount, ref, watch } from 'vue';
 
 fetchMasters();
 const cities = ref(['Всі міста']);
 const skills = ref(['Всі навички']);
 
-onMounted(() => {
+watch(() => mainState.masters, () => {
   mainState.masters.forEach((item: Master) => {
     if (item.city && !cities.value.includes(item.city)) {
       cities.value.push(item.city);
@@ -50,13 +56,19 @@ onMounted(() => {
   });
 });
 
+onBeforeUnmount(() => {
+  setFilterValue('city', null);
+  setFilterValue('skill', null);
+  setCurrentPage(1);
+});
+
 function onPageChange(page: number) {
   setCurrentPage(page);
   fetchMasters();
 }
 
 function onCityChange(city: string) {
-  setFilterValue('address', city === 'Всі міста' ? null : city);
+  setFilterValue('city', city === 'Всі міста' ? null : city);
   fetchMasters();
 }
 

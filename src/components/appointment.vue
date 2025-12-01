@@ -23,7 +23,7 @@
           <v-btn
             size="small"
             color="red"
-            @click="$emit('reject', appointment.id)">
+            @click="$emit('reject', { id: appointment.id, event: $event })">
             Відхилити
           </v-btn>
         </template>
@@ -39,7 +39,7 @@
           <v-btn
             size="small"
             color="red"
-            @click="$emit('cancel', appointment.id)">
+            @click="$emit('cancel', { id: appointment.id, event: $event })">
             Скасувати
           </v-btn>
         </template>
@@ -57,10 +57,10 @@ defineProps<{
 }>();
 
 defineEmits<{
-  (e: 'accept', appointment: string): void;
-  (e: 'add-to-google-calendar', appointment: Appointment): void;
-  (e: 'cancel', appointment: string): void;
-  (e: 'reject', appointment: string): void;
+  (e: 'accept', data: string): void;
+  (e: 'add-to-google-calendar', data: Appointment): void;
+  (e: 'cancel', data: { id: string; event: Event }): void;
+  (e: 'reject', data: { id: string; event: Event}): void;
 }>();
 
 function formatDate(date: string) {

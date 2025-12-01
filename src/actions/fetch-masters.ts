@@ -13,7 +13,7 @@ import type { Master } from '@/types/master';
 //       fullName: "Maria Polak",
 //       about: 'Barber',
 //       skills: [],
-//       address: null,
+//       city: null,
 //       avatarUrl: null,
 //     },
 //     {
@@ -25,7 +25,7 @@ import type { Master } from '@/types/master';
 //         "cutting",
 //         "nail"
 //       ],
-//       address: "Lviv",
+//       city: "Lviv",
 //       avatarUrl: "string",
 //       rating: 4.7,
 //       feedbacksCount: 12,
@@ -41,7 +41,7 @@ export async function fetchMasters() {
 
   const response = await api.get(`/masters`, {
   params: {
-    address: mainState.filter.address,
+    city: mainState.filter.city,
     skill: mainState.filter.skill,
     page: mainState.currentPage,
     pageSize: 10,
