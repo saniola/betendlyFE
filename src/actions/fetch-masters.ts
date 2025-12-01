@@ -1,9 +1,10 @@
 import { setLoadingStatus } from '@/actions/set-loading-status';
-import { mainState } from '@/state';
-import { api } from '@/utils/http';
+import { defaultSkill, defaultCity } from '@/config';
 import { buildAvatarUrl } from '@/helpers/avatar-url';
 import { normalizeYearsExperience } from '@/helpers/master-profile';
+import { mainState } from '@/state';
 import type { Master } from '@/types/master';
+import { api } from '@/utils/http';
 
 // const masters = {
 //   items: [
@@ -41,8 +42,8 @@ export async function fetchMasters() {
 
   const response = await api.get(`/masters`, {
   params: {
-    city: mainState.filter.city,
-    skill: mainState.filter.skill,
+    city: mainState.filter.city === defaultCity ? null : mainState.filter.city,
+    skill: mainState.filter.skill === defaultSkill ? null : mainState.filter.skill,
     page: mainState.currentPage,
     pageSize: 10,
   },
