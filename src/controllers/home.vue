@@ -58,8 +58,8 @@ watch(() => mainState.masters, () => {
 });
 
 onBeforeUnmount(() => {
-  setFilterValue('city', null);
-  setFilterValue('skill', null);
+  setFilterValue('city', defaultCity);
+  setFilterValue('skill', defaultSkill);
   setCurrentPage(1);
 });
 
