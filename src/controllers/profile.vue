@@ -175,10 +175,10 @@
     </v-card>
 
     <BookAppointmentModal
-      v-if="selectedService && mainState.currentUser"
+      v-if="selectedService && mainState.currentUser && masterProfileId"
       v-model="bookingDialog"
       :service="selectedService"
-      :master-id="user.id"
+      :master-id="masterProfileId ?? ''"
       :client-id="mainState.currentUser.id"
       @booked="handleBookingCreated" />
   </v-container>
@@ -199,6 +199,7 @@ const user = computed(() => mainState.user);
 const fullName = computed(() => `${user.value?.firstName} ${user.value?.lastName}`);
 const route = useRoute();
 const fullAddress = computed(() => `${user.value?.master?.city}${user.value?.master?.address ? ', ' + user.value.master.address : ''}`);
+const masterProfileId = computed(() => user.value?.master?.id ?? user.value?.id ?? null);
 
 const selectedService = ref<ProfileService | null>(null);
 const bookingDialog = ref(false);
@@ -233,6 +234,7 @@ defineExpose({
   handleBookingCreated,
   fullName,
   fullAddress,
+  masterProfileId,
   defaultAvatar,
   AppointmentsList,
   BookAppointmentModal,

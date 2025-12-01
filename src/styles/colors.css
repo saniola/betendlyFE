@@ -1,0 +1,17 @@
+:root {
+  --color-primary: #11c4b0;
+  --color-primary-dark: #0a6f66;
+  --color-primary-contrast: #0f746c;
+  --color-primary-deep: #0a5f58;
+  --color-primary-muted: #2f6f67;
+  --color-primary-accent: #2fb5a8;
+  --color-chip: var(--color-primary);
+  --color-border: #bdebe4;
+  --color-background-soft: #e8fffb;
+  --color-surface: #f6f6f6;
+  --color-surface-alt: #f8fafc;
+  --color-white: #fefefe;
+  --color-text-muted: #6b6b6b;
+  --color-primary-rgb: 17, 196, 176;
+}
+

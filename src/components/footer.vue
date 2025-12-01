@@ -59,7 +59,7 @@
           target="_blank">
           <v-icon
             :icon="social.icon"
-            color="#6c7480"
+            :style="{ color: 'var(--color-primary-accent)' }"
             size="28" />
         </a>
       </div>
@@ -112,8 +112,8 @@ const socialLinks = [
 
 <style module lang="scss">
 .component {
-  background-color: #fff;
-  border-top: 1px solid #e4e9f2;
+  background-color: var(--color-background-soft);
+  border-top: 1px solid var(--color-border);
   margin-top: 48px;
   padding: 48px 0;
 }
@@ -138,7 +138,7 @@ const socialLinks = [
 }
 
 .copy {
-  color: #6c7480;
+  color: var(--color-primary-contrast);
   font-size: 1rem;
   line-height: 1.5;
   margin: 0;
@@ -151,7 +151,7 @@ const socialLinks = [
 }
 
 .title {
-  color: #111a2c;
+  color: var(--color-primary-deep);
   font-size: 1.25rem;
   font-weight: 700;
   margin: 0;
@@ -166,27 +166,27 @@ const socialLinks = [
 }
 
 .contactItem {
-  color: #4c5566;
+  color: var(--color-primary-muted);
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
 .label {
-  color: #111a2c;
+  color: var(--color-primary-deep);
   font-weight: 600;
 }
 
 .value,
 .valueLink {
-  color: #4c5566;
+  color: var(--color-primary-muted);
   font-size: 1.05rem;
   line-height: 1.4;
 }
 
 .valueLink {
   &:hover {
-    color: #1976d2;
+    color: var(--color-primary);
   }
 }
 

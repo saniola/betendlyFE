@@ -136,7 +136,8 @@ const fullAddress = computed(() => `${props.master.city}${props.master.address ?
 }
 
 .skill {
-  background-color: #a0e5fa;
+  background-color: var(--color-chip);
+  color: var(--color-white);
   border-radius: 3px;
   padding: 3px;
 }

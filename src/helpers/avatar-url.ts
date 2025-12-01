@@ -1,19 +1,36 @@
-const apiOrigin = (() => {
-  const apiUrl = import.meta.env.VITE_API_URL;
+const DEFAULT_AVATAR_ORIGIN = 'https://betendly-api.azurewebsites.net';
+
+function resolveOrigin(candidate?: string) {
+  if (!candidate) return undefined;
 
   try {
-    if (apiUrl) {
-      return new URL(apiUrl).origin;
-    }
-
+    return new URL(candidate).origin;
+  } catch {
     if (typeof window !== 'undefined') {
-      return window.location.origin;
+      try {
+        return new URL(candidate, window.location.origin).origin;
+      } catch {
+        return undefined;
+      }
     }
-  } catch (error) {
-    console.warn('Failed to parse API url for avatar origin', error);
+    return undefined;
+  }
+}
+
+const apiOrigin = (() => {
+  const explicitOrigin =
+    resolveOrigin(import.meta.env.VITE_AVATAR_ORIGIN) ||
+    resolveOrigin(import.meta.env.VITE_API_URL);
+
+  if (explicitOrigin) {
+    return explicitOrigin;
   }
 
-  return undefined;
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
+  }
+
+  return DEFAULT_AVATAR_ORIGIN;
 })();
 
 function ensureLeadingSlash(path: string) {

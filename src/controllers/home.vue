@@ -15,7 +15,7 @@
     <v-pagination
       v-if="mainState.totalPages > 1"
       v-model="mainState.currentPage"
-      color="#1976d2"
+      color="primary"
       rounded
       :length="mainState.totalPages"
       @update:model-value="onPageChange" />
@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { fetchMasters } from '@/actions/fetch-masters';
 import { setCurrentPage } from '@/actions/set-current-page';
-import { setFilterValue } from '@/actions/set-filter-value';  
+import { setFilterValue } from '@/actions/set-filter-value';
 import Filters from '@/components/filters.vue';
 import MasterCard from '@/components/master-card.vue';
 import { mainState } from '@/state';

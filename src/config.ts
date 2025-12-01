@@ -1,1 +1,1 @@
-export const defaultAvatar = new URL('@/assets/user.png', import.meta.url).href;
+export const defaultAvatar = new URL('@/assets/avatar-placeholder.svg', import.meta.url).href;
