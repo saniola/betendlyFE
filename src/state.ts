@@ -22,7 +22,7 @@ export const mainState = reactive<MainState>({
   currentPage: 1,
   currentUser: null,
   filter: {
-    address: null,
+    city: null,
     skill: null,
   },
   isLoading: false,

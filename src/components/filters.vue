@@ -23,7 +23,7 @@
           label="Місто"
           variant="outlined"
           :items="cities"
-          :value="filter.address"
+          :value="filter.city"
           @update:model-value="$emit('city-change', $event)" />
       </v-col>
     </v-row>

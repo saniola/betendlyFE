@@ -21,7 +21,7 @@ import { normalizeYearsExperience } from '@/helpers/master-profile';
 //       "Дрібний ремонт"
 //     ],
 //     yearsExperience: 7,
-//     address: "Київ, Україна",
+//     city: "Київ",
 //     services: [
 //       {
 //         id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
