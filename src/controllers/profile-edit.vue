@@ -3,6 +3,7 @@
     v-if="user"
     class="py-6">
     <v-btn
+      color="primary"
       variant="text"
       prepend-icon="mdi-arrow-left"
       class="mb-4"
@@ -58,7 +59,7 @@
               label="Оновити аватар"
               prepend-icon="mdi-camera"
               variant="outlined"
-              @change="onAvatarSelected" />
+              @update:modelValue="onAvatarSelected" />
           </v-col>
 
           <v-col
@@ -208,6 +209,7 @@
               <v-btn
                 icon
                 size="small"
+                color="primary"
                 variant="text"
                 @click="openServiceDialog(service)">
                 <v-icon icon="mdi-pencil" />
@@ -243,6 +245,7 @@
       </v-btn>
 
       <v-btn
+        color="primary"
         variant="outlined"
         :to="{ name: 'profile', params: { id: user?.id } }">
         Скасувати
@@ -292,6 +295,7 @@
 
         <v-card-actions class="justify-end">
           <v-btn
+            color="primary"
             variant="text"
             @click="closeServiceDialog">
             Скасувати
@@ -466,7 +470,7 @@ function goBack() {
   }
 }
 
-async function onAvatarSelected(files?: File[] | File | FileList) {
+async function onAvatarSelected(files?: File[] | File | FileList | null) {
   const file = normalizeFileInput(files);
   if (!file) return;
 
@@ -477,20 +481,21 @@ async function onAvatarSelected(files?: File[] | File | FileList) {
   avatarPreviewUrl.value = URL.createObjectURL(file);
 
   const uploadedPath = await uploadAvatar(file);
-  if (uploadedPath) {
-    const normalized = buildAvatarUrl(uploadedPath) ?? uploadedPath;
-    form.user.avatarUrl = normalized;
 
-    if (mainState.currentUser && user.value && mainState.currentUser.id === user.value.id) {
-      mainState.currentUser.avatarUrl = normalized;
-    }
+  if (!uploadedPath) return;
 
-    if (mainState.user) {
-      mainState.user.avatarUrl = normalized;
-    }
+  URL.revokeObjectURL(avatarPreviewUrl.value);
+  avatarPreviewUrl.value = null;
 
-    URL.revokeObjectURL(avatarPreviewUrl.value);
-    avatarPreviewUrl.value = null;
+  const normalized = buildAvatarUrl(uploadedPath) ?? uploadedPath;
+  form.user.avatarUrl = normalized;
+
+  if (mainState.currentUser && user.value && mainState.currentUser.id === user.value.id) {
+    mainState.currentUser.avatarUrl = normalized;
+  }
+
+  if (mainState.user) {
+    mainState.user.avatarUrl = normalized;
   }
 }
 
@@ -571,7 +576,7 @@ onBeforeUnmount(() => {
   }
 });
 
-function normalizeFileInput(input?: File[] | File | FileList) {
+function normalizeFileInput(input?: File[] | File | FileList | null) {
   if (!input) return undefined;
   if (input instanceof File) return input;
   if (input instanceof FileList) return input.item(0) ?? undefined;
