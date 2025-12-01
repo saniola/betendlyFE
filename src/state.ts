@@ -1,4 +1,5 @@
 import { reactive } from 'vue';
+import { defaultSkill, defaultCity } from '@/config';
 import type { Appointment } from '@/types/appointment';
 import type { CurrentUser } from '@/types/current-user';
 import type { Filter } from '@/types/filter';
@@ -22,8 +23,8 @@ export const mainState = reactive<MainState>({
   currentPage: 1,
   currentUser: null,
   filter: {
-    city: null,
-    skill: null,
+    city: defaultCity,
+    skill: defaultSkill,
   },
   isLoading: false,
   masters: [],

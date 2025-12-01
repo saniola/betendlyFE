@@ -34,13 +34,14 @@ import { setCurrentPage } from '@/actions/set-current-page';
 import { setFilterValue } from '@/actions/set-filter-value';
 import Filters from '@/components/filters.vue';
 import MasterCard from '@/components/master-card.vue';
+import { defaultSkill, defaultCity } from '@/config';
 import { mainState } from '@/state';
 import type { Master } from '@/types/master';
 import { onBeforeUnmount, ref, watch } from 'vue';
 
 fetchMasters();
-const cities = ref(['Всі міста']);
-const skills = ref(['Всі навички']);
+const cities = ref([defaultCity]);
+const skills = ref([defaultSkill]);
 
 watch(() => mainState.masters, () => {
   mainState.masters.forEach((item: Master) => {
@@ -57,8 +58,8 @@ watch(() => mainState.masters, () => {
 });
 
 onBeforeUnmount(() => {
-  setFilterValue('city', null);
-  setFilterValue('skill', null);
+  setFilterValue('city', defaultCity);
+  setFilterValue('skill', defaultSkill);
   setCurrentPage(1);
 });
 
@@ -68,12 +69,12 @@ function onPageChange(page: number) {
 }
 
 function onCityChange(city: string) {
-  setFilterValue('city', city === 'Всі міста' ? null : city);
+  setFilterValue('city', city);
   fetchMasters();
 }
 
 function onSkillChange(skill: string) {
-  setFilterValue('skill', skill === 'Всі навички' ? null : skill);
+  setFilterValue('skill', skill);
   fetchMasters();
 }
 </script>
