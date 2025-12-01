@@ -153,7 +153,7 @@
                   <v-btn
                     color="primary"
                     type="button"
-                    @click="bookAppointment">
+                    @click="bookAppointment(service)">
                     Записатись
                   </v-btn>
                 </td>
@@ -173,33 +173,72 @@
         <AppointmentsList />
       </template>
     </v-card>
+
+    <BookAppointmentModal
+      v-if="selectedService && mainState.currentUser && masterProfileId"
+      v-model="bookingDialog"
+      :service="selectedService"
+      :master-id="masterProfileId ?? ''"
+      :client-id="mainState.currentUser.id"
+      @booked="handleBookingCreated" />
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { fetchMember } from '@/actions/fetch-member';
 import { defaultAvatar } from '@/config';
 import AppointmentsList from '@/controllers/appointments-list.vue';
+import BookAppointmentModal from '@/components/book-appointment-modal.vue';
 import router from '@/router';
 import { mainState } from '@/state';
+import type { ProfileService } from '@/types/user';
 
 const user = computed(() => mainState.user);
 const fullName = computed(() => `${user.value?.firstName} ${user.value?.lastName}`);
 const route = useRoute();
 const fullAddress = computed(() => `${user.value?.master?.city}${user.value?.master?.address ? ', ' + user.value.master.address : ''}`);
+const masterProfileId = computed(() => user.value?.master?.id ?? user.value?.id ?? null);
+
+const selectedService = ref<ProfileService | null>(null);
+const bookingDialog = ref(false);
+
+watch(
+  () => bookingDialog.value,
+  (isOpen) => {
+    if (!isOpen) {
+      selectedService.value = null;
+    }
+  },
+);
 
 fetchMember(route.params.id as string);
 
-function bookAppointment() {
+function bookAppointment(service: ProfileService) {
   if (!mainState.currentUser) {
     router.push({ name: 'login' });
     return;
   }
 
-  alert('Booking functionality is not implemented yet.');
+  selectedService.value = service;
+  bookingDialog.value = true;
 }
+
+function handleBookingCreated() {
+  // placeholder for future actions (e.g., refresh appointments)
+}
+
+defineExpose({
+  bookAppointment,
+  handleBookingCreated,
+  fullName,
+  fullAddress,
+  masterProfileId,
+  defaultAvatar,
+  AppointmentsList,
+  BookAppointmentModal,
+});
 </script>
 
 <style lang="scss" module>

@@ -41,6 +41,7 @@
 
         <v-btn
           class="text-none"
+          color="primary"
           variant="text"
           @click="onForgotPassword">
           Забули пароль?

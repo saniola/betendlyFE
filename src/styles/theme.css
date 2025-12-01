@@ -1,0 +1,33 @@
+@import './colors.css';
+
+.bg-auth {
+  background: linear-gradient(135deg, var(--color-background-soft) 0%, var(--color-white) 100%);
+  min-height: 100vh;
+}
+
+.v-theme--betendly .bg-primary {
+  background-color: var(--color-primary) !important;
+  color: var(--color-white) !important;
+  box-shadow: 0 6px 16px rgba(var(--color-primary-rgb), 0.24);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.v-theme--betendly .bg-primary:hover:not(.v-btn--disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(var(--color-primary-rgb), 0.32);
+}
+
+.v-theme--betendly .bg-primary:active:not(.v-btn--disabled) {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.28);
+}
+
+.v-theme--betendly .text-primary {
+  color: var(--color-primary-dark) !important;
+}
+
+.v-theme--betendly .v-btn--variant-outlined.text-primary {
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary-dark) !important;
+}
+

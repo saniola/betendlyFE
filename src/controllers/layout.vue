@@ -15,9 +15,9 @@
       :class="$style.loader">
       <img
         alt="Loading..."
-        height="50"
-        src="@/assets/loader.gif"
-        width="50" />
+        height="110"
+        src="@/assets/loader.svg"
+        width="110" />
 
         <p :class="$style.text">
           Please wait. Loading...
@@ -52,7 +52,6 @@ import { mainState } from '@/state';
 
 .loader {
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.95);
   bottom: 0;
   display: flex;
   flex-direction: column;
@@ -65,7 +64,7 @@ import { mainState } from '@/state';
 }
 
 .text {
-  color: #000;
+  color: var(--color-primary-dark);
   padding-top: 10px;
 }
 </style>
