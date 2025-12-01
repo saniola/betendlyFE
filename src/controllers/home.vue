@@ -30,13 +30,13 @@ import Filters from '@/components/filters.vue';
 import MasterCard from '@/components/master-card.vue';
 import { mainState } from '@/state';
 import type { Master } from '@/types/master';
-import { onMounted, ref } from 'vue';
+import { ref, watch } from 'vue';
 
 fetchMasters();
 const cities = ref(['Всі міста']);
 const skills = ref(['Всі навички']);
 
-onMounted(() => {
+watch(() => mainState.masters, () => {
   mainState.masters.forEach((item: Master) => {
     if (item.city && !cities.value.includes(item.city)) {
       cities.value.push(item.city);
