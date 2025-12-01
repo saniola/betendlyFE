@@ -13,7 +13,7 @@ fetchCurrentUser();
 
 <style>
 body {
-  background-color: #f8fafc;
+  background-color: var(--color-surface-alt);
   min-height: 100vh;
 }
 </style>

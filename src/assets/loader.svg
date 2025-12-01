@@ -1,0 +1,30 @@
+<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow" x="-60" y="-60" width="280" height="280" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="8" stdDeviation="18" flood-color="rgba(17, 196, 176, 0.35)" />
+    </filter>
+  </defs>
+  <g filter="url(#glow)">
+    <path
+      id="heart"
+      d="M80 142S16 92 16 52C16 34.848 29.848 21 47 21C60.288 21 70.704 28.96 80 42.08C89.296 28.96 99.712 21 113 21C130.152 21 144 34.848 144 52C144 92 80 142 80 142Z"
+      stroke="#11c4b0"
+      stroke-width="12"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"
+      transform-box="fill-box"
+      transform-origin="center">
+      <animateTransform attributeName="transform" type="scale" values="1;1.08;1" dur="1.4s" repeatCount="indefinite" additive="sum" />
+    </path>
+    <path
+      d="M60 84L74 98L102 70"
+      stroke="#11c4b0"
+      stroke-width="12"
+      stroke-linecap="round"
+      stroke-linejoin="round">
+      <animate attributeName="opacity" values="0.35;1;0.35" dur="1.4s" repeatCount="indefinite" />
+    </path>
+  </g>
+</svg>
+

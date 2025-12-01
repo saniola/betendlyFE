@@ -20,12 +20,12 @@
                 height="30"
                 width="30"
                 :alt="`${currentUser?.firstName} ${currentUser?.lastName}`"
-                :class="$style.logo"
+                :class="$style.avatar"
                 :src="currentUser.avatarUrl || defaultAvatar" />
 
               <RouterLink
                 :class="[
-                  'text-white', 'font-weight-medium',
+                  'font-weight-medium',
                   $style.username,
                 ]"
                 :to="`/member/${currentUser.id}`">
@@ -34,9 +34,9 @@
             </div>
 
             <v-btn
-              color="white"
+              color="primary"
               variant="outlined"
-              class="text-none ms-2"
+              :class="[$style.outlineButton, 'text-none', 'ms-2']"
               @click="logout">
               Log out
             </v-btn>
@@ -45,18 +45,18 @@
           <template v-else>
             <v-btn
               v-if="!['signup'].includes(route.name as string)"
-              color="white"
+              color="primary"
               variant="outlined"
-              class="text-none ms-2"
+              :class="[$style.outlineButton, 'text-none', 'ms-2']"
               :to="{ name: 'signup' }">
               Sign Up
             </v-btn>
 
             <v-btn
               v-if="!['login'].includes(route.name as string)"
-              color="white"
+              color="primary"
               variant="outlined"
-              class="text-none ms-2"
+              :class="[$style.outlineButton, 'text-none', 'ms-2']"
               :to="{ name: 'login' }">
               Log in
             </v-btn>
@@ -83,13 +83,14 @@ const route = useRoute();
 
 <style module lang="scss">
 .component {
-  background-color: #1976d2;
+  background-color: var(--color-background-soft);
   padding: 8px 0;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
+  box-shadow: 0 2px 12px rgba(var(--color-primary-rgb), 0.18);
 }
 
 .navbar {
@@ -101,6 +102,11 @@ const route = useRoute();
 .logo {
   display: block;
   width: auto;
+}
+
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .actions,
@@ -118,8 +124,18 @@ const route = useRoute();
 }
 
 .username {
+  color: var(--color-primary-dark);
   &:hover {
     opacity: .8;
+  }
+}
+
+.outlineButton {
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary-dark) !important;
+
+  :global(.v-btn__content) {
+    color: var(--color-primary-dark) !important;
   }
 }
 </style>

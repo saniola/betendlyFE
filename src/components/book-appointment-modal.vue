@@ -29,6 +29,7 @@
 
         <v-btn
           icon="mdi-close"
+          color="primary"
           variant="text"
           @click="close" />
       </v-card-title>
@@ -122,6 +123,7 @@
 
       <v-card-actions class="justify-end">
         <v-btn
+          color="primary"
           variant="text"
           @click="close">
           Скасувати
@@ -174,7 +176,7 @@ const dialog = computed({
 const today = new Date();
 const minBookingDate = formatDate(today);
 const maxBookingDate = formatDate(addDays(today, 30));
-const selectedDate = ref(minBookingDate);
+const selectedDate = ref<string | Date>(minBookingDate);
 const slots = ref<Slot[]>([]);
 const slotsError = ref<string | null>(null);
 const slotsLoading = ref(false);
@@ -193,6 +195,8 @@ const timeFormatter = new Intl.DateTimeFormat('uk-UA', {
   hour: '2-digit',
   minute: '2-digit',
 });
+
+const resolvedMasterId = computed(() => props.service?.masterId ?? props.masterId);
 
 const slotSections = computed<SlotSection[]>(() => {
   const groups: Record<SlotGroupKey, SlotSection> = {
@@ -222,9 +226,9 @@ watch(
 );
 
 watch(
-  () => [dialog.value, selectedDate.value, props.service?.id],
+  () => [dialog.value, selectedDate.value, props.service?.id, resolvedMasterId.value],
   async ([isOpen]) => {
-    if (!isOpen || !props.service) return;
+    if (!isOpen || !props.service || !resolvedMasterId.value) return;
     await loadSlots();
   },
 );
@@ -276,7 +280,11 @@ function addDays(date: Date, days: number) {
   return clone;
 }
 
-function parseDate(date: string) {
+function parseDate(date: string | Date) {
+  if (date instanceof Date) {
+    return date;
+  }
+
   const [yearStr, monthStr, dayStr] = date.split('-');
   const year = Number(yearStr ?? new Date().getFullYear());
   const month = Number(monthStr ?? 1);
@@ -295,13 +303,26 @@ function formatSlotLabel(startUtc: string) {
   return timeFormatter.format(new Date(startUtc));
 }
 
+function getSelectedDateString() {
+  const value = selectedDate.value;
+  if (value instanceof Date) {
+    return formatDate(value);
+  }
+
+  return value;
+}
+
 async function loadSlots() {
-  if (!props.service) return;
+  if (!props.service || !resolvedMasterId.value) return;
   slotsLoading.value = true;
   slotsError.value = null;
 
   try {
-    const data = await fetchAvailabilitySlots(props.masterId, props.service.id, selectedDate.value);
+    const data = await fetchAvailabilitySlots(
+      resolvedMasterId.value,
+      props.service.id,
+      getSelectedDateString(),
+    );
     slots.value = data;
 
     if (!data.some((slot) => slot.startUtc === selectedSlotStartUtc.value)) {
@@ -315,7 +336,7 @@ async function loadSlots() {
 }
 
 async function submitBooking() {
-  if (!props.service || !selectedSlotStartUtc.value || !props.clientId) {
+  if (!props.service || !selectedSlotStartUtc.value || !props.clientId || !resolvedMasterId.value) {
     return;
   }
 
@@ -323,7 +344,7 @@ async function submitBooking() {
 
   try {
     await createBooking({
-      masterId: props.masterId,
+      masterId: resolvedMasterId.value,
       clientId: props.clientId,
       serviceId: props.service.id,
       startUtc: selectedSlotStartUtc.value,
@@ -363,7 +384,7 @@ function generateIdempotencyKey() {
 }
 
 .slotsWrapper {
-  background-color: #f6f6f6;
+  background-color: var(--color-surface);
   border-radius: 20px;
   padding: 20px;
   display: flex;
@@ -381,7 +402,7 @@ function generateIdempotencyKey() {
 .timezone {
   font-size: 0.75rem;
   text-transform: uppercase;
-  color: #6b6b6b;
+  color: var(--color-text-muted);
   font-weight: 600;
 }
 

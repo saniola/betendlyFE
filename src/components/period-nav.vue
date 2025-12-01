@@ -1,6 +1,7 @@
 <template>
   <div class="d-flex justify-space-between align-center mb-4">
     <v-btn
+      color="primary"
       variant="outlined"
       :disabled="isPrevDisabled"
       @click="$emit('prev-month')">
@@ -10,6 +11,7 @@
     <strong>{{ formattedPeriod }}</strong>
 
     <v-btn
+      color="primary"
       variant="outlined"
       @click="$emit('next-month')">
       Наступний
