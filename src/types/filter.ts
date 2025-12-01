@@ -1,4 +1,4 @@
 export interface Filter {
-  city: string | null;
-  skill: string | null;
+  city: string;
+  skill: string;
 }

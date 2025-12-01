@@ -5,11 +5,12 @@
     <v-row dense>
       <v-col cols="12" sm="6" md="3">
         <v-select
+          active
           density="comfortable"
           hide-details
           item-title="value"
           item-value="key"
-          label="Всі навички"
+          label="Навички"
           variant="outlined"
           :items="skills"
           :value ="filter.skill"
@@ -18,9 +19,10 @@
 
       <v-col cols="12" sm="6" md="3">
         <v-select
+          active
           density="comfortable"
           hide-details
-          label="Місто"
+          label="Міста"
           variant="outlined"
           :items="cities"
           :value="filter.city"
