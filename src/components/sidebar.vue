@@ -8,7 +8,8 @@
       :appointments="todayConfirmedAppointments"
       :is-master="currentUser.isMaster"
       :loading="loading"
-      class="mt-4" />
+      class="mt-4"
+      @view-all="onViewAllAppointments" />
 
     <MasterPendingRequests
       v-if="currentUser.isMaster"
@@ -19,6 +20,13 @@
       @reject="onRejectRequest"
       @view-all="goToAppointments" />
   </aside>
+
+  <AppointmentsCalendarModal
+    v-if="currentUser?.isMaster"
+    v-model="appointmentsModalOpen"
+    :initial-appointments="mainState.appointments"
+    :master-id="currentUser.id"
+    :is-master="currentUser.isMaster" />
 </template>
 
 <script setup lang="ts">
@@ -31,6 +39,7 @@ import { mainState } from '@/state';
 import UserProfileSidebar from '@/components/user-profile-sidebar.vue';
 import UserAppointmentsSidebar from '@/components/user-appointments-sidebar.vue';
 import MasterPendingRequests from '@/components/master-pending-requests.vue';
+import AppointmentsCalendarModal from '@/components/appointments-calendar-modal.vue';
 import type { CurrentUser } from '@/types/current-user';
 
 defineProps<{
@@ -39,6 +48,7 @@ defineProps<{
 
 const loading = ref(false);
 const router = useRouter();
+const appointmentsModalOpen = ref(false);
 
 const todayConfirmedAppointments = computed(() => {
   const today = new Date();
@@ -89,6 +99,11 @@ async function onAcceptRequest(id: string) {
 async function onRejectRequest(id: string) {
   await rejectAppointment(id);
   await refreshAppointments();
+}
+
+function onViewAllAppointments() {
+  if (!mainState.currentUser?.isMaster) return;
+  appointmentsModalOpen.value = true;
 }
 
 async function goToAppointments() {

@@ -1,7 +1,13 @@
 <template>
   <v-card>
-    <v-card-title>
-      {{ isMaster ? 'Записи на сьогодні' : 'Мої записи' }}
+    <v-card-title
+      :class="[isMaster ? $style.clickableTitle : '']"
+      :role="isMaster ? 'button' : undefined"
+      :tabindex="isMaster ? 0 : undefined"
+      @click="handleViewAll"
+      @keydown.enter.prevent="handleViewAll"
+      @keydown.space.prevent="handleViewAll">
+      {{ isMaster ? 'Записи' : 'Мої записи' }}
     </v-card-title>
 
     <v-card-text>
@@ -49,10 +55,14 @@
 <script setup lang="ts">
 import type { Appointment } from '@/types/appointment';
 
-defineProps<{
+const props = defineProps<{
   appointments: Appointment[];
   isMaster?: boolean;
   loading?: boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: 'view-all'): void;
 }>();
 
 function formatAppointmentTime(startUtc: string): string {
@@ -93,6 +103,11 @@ function getStatusLabel(status: number): string {
     default:
       return 'Невідомо';
   }
+}
+
+function handleViewAll() {
+  if (!props.isMaster) return;
+  emit('view-all');
 }
 </script>
 
@@ -138,5 +153,13 @@ function getStatusLabel(status: number): string {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-</style>
 
+.clickableTitle {
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    color: var(--color-primary-dark);
+  }
+}
+</style>
