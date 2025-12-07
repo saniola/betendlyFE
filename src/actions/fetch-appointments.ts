@@ -35,15 +35,15 @@ import { api } from '@/utils/http';
 // ];
 
 export async function fetchAppointments(from: Date, to: Date) {
-  const response = await api.get(`/bookings`, {
-    params: {
-      masterId: mainState.user?.isMaster ? mainState.user.id : undefined,
-      clientId: mainState.user?.isMaster ? undefined : mainState.user?.id,
-      fromUtc: from,
-      toUtc: to,
-    },
-  });
+  const params = {
+    masterId: mainState.currentUser?.isMaster ? mainState.currentUser.id : undefined,
+    clientId: mainState.currentUser?.isMaster ? undefined : mainState.currentUser?.id,
+    fromUtc: from.toISOString(),
+    toUtc: to.toISOString(),
+  };
+
+  const response = await api.get(`/bookings`, { params });
 
   mainState.appointments = response.data;
-  // mainState.appointments = appointments;
+  return response.data;
 }
