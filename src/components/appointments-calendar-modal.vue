@@ -244,7 +244,15 @@ function parseDate(value: string | Date): Date {
   if (value instanceof Date) {
     return value;
   }
-  const [year, month, day] = value.split('-').map(Number);
+  const [yearStr, monthStr, dayStr] = value.split('-');
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  const day = Number(dayStr);
+
+  if ([year, month, day].some(part => Number.isNaN(part))) {
+    return new Date(value);
+  }
+
   return new Date(year, month - 1, day);
 }
 
