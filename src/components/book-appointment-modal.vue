@@ -375,7 +375,7 @@ function generateIdempotencyKey() {
 
 <style lang="scss" module>
 .bookingCard {
-  border-radius: 24px;
+  border-radius: var(--radius-xl);
 }
 
 .bookingLayout {
@@ -391,7 +391,7 @@ function generateIdempotencyKey() {
 
 .slotsWrapper {
   background-color: var(--color-surface);
-  border-radius: 20px;
+  border-radius: var(--radius-lg);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -440,7 +440,7 @@ function generateIdempotencyKey() {
 }
 
 .slotPanels :global(.v-expansion-panel-title__overlay) {
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
 }
 
 @media (max-width: 600px) {

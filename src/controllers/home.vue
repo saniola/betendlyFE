@@ -1,39 +1,33 @@
 <template>
-  <Filters
-    :cities
-    :filter="mainState.filter"
-    :skills
-    @city-change="onCityChange"
-    @skill-change="onSkillChange" />
+  <div :class="$style.pageLayout">
+    <!-- Main content -->
+    <div :class="$style.mainContent">
+      <MastersList
+        :masters="mainState.masters"
+        :cities="cities"
+        :skills="skills"
+        :filter="mainState.filter"
+        :current-page="mainState.currentPage"
+        :total-pages="mainState.totalPages"
+        @city-change="onCityChange"
+        @skill-change="onSkillChange"
+        @page-change="onPageChange" />
+    </div>
 
-  <ul
-    v-if="mainState.masters.length"
-    :class="$style.component">
-    <MasterCard
-      v-for="(master, index) in mainState.masters"
-      :key="index"
-      :master="master" />
-
-    <v-pagination
-      v-if="mainState.totalPages > 1"
-      v-model="mainState.currentPage"
-      color="primary"
-      rounded
-      :length="mainState.totalPages"
-      @update:model-value="onPageChange" />
-  </ul>
-
-  <p v-else class="text-center mt-8">
-    Майстрів не знайдено
-  </p>
+    <!-- Sidebar -->
+    <Sidebar
+      :current-user="mainState.currentUser"
+      :appointments="[]"
+      :appointments-loading="false" />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { fetchMasters } from '@/actions/fetch-masters';
 import { setCurrentPage } from '@/actions/set-current-page';
 import { setFilterValue } from '@/actions/set-filter-value';
-import Filters from '@/components/filters.vue';
-import MasterCard from '@/components/master-card.vue';
+import MastersList from '@/components/masters-list.vue';
+import Sidebar from '@/components/sidebar.vue';
 import { defaultSkill, defaultCity } from '@/config';
 import { mainState } from '@/state';
 import type { Master } from '@/types/master';
@@ -80,7 +74,21 @@ function onSkillChange(skill: string) {
 </script>
 
 <style module lang="scss">
-.component {
+.pageLayout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.mainContent {
+  flex: 1;
+  min-width: 0; // Important for flex child to shrink properly
   padding-top: 24px;
+}
+
+@media (max-width: 1024px) {
+  .mainContent {
+    max-width: 100%;
+  }
 }
 </style>
