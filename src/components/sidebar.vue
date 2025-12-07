@@ -5,7 +5,7 @@
     <UserProfileSidebar :user="currentUser" />
 
     <UserAppointmentsSidebar
-      :appointments="appointments"
+      :appointments="appointments || []"
       :is-master="currentUser.isMaster"
       :loading="appointmentsLoading"
       class="mt-4" />

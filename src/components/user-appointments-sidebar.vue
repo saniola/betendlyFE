@@ -55,43 +55,43 @@ defineProps<{
   loading?: boolean;
 }>();
 
-function formatAppointmentTime(startUtc: string) {
+function formatAppointmentTime(startUtc: string): string {
   const date = new Date(startUtc);
   const timeFormatter = new Intl.DateTimeFormat('uk-UA', {
-    hour: '2-digit',
-    minute: '2-digit',
+    hour: '2-digit' as const,
+    minute: '2-digit' as const,
   });
   const dateFormatter = new Intl.DateTimeFormat('uk-UA', {
-    day: 'numeric',
-    month: 'short',
+    day: 'numeric' as const,
+    month: 'short' as const,
   });
 
   return `${dateFormatter.format(date)}, ${timeFormatter.format(date)}`;
 }
 
-function getStatusColor(status: string) {
+function getStatusColor(status: number): string {
   switch (status) {
-    case 'confirmed':
+    case 1: // confirmed
       return 'success';
-    case 'pending':
+    case 0: // pending
       return 'warning';
-    case 'cancelled':
+    case 2: // cancelled
       return 'error';
     default:
       return 'default';
   }
 }
 
-function getStatusLabel(status: string) {
+function getStatusLabel(status: number): string {
   switch (status) {
-    case 'confirmed':
+    case 1: // confirmed
       return 'Підтверджено';
-    case 'pending':
+    case 0: // pending
       return 'Очікує';
-    case 'cancelled':
+    case 2: // cancelled
       return 'Скасовано';
     default:
-      return status;
+      return 'Невідомо';
   }
 }
 </script>
