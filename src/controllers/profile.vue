@@ -167,9 +167,11 @@
       <template v-if="mainState.currentUser?.id === user.id">
         <v-divider class="my-4" />
 
-        <h2 class="text-h5 mb-1">
-          Ваші записи
-        </h2>
+        <div id="appointments-section">
+          <h2 class="text-h5 mb-1">
+            Ваші записи
+          </h2>
+        </div>
 
         <AppointmentsList />
       </template>

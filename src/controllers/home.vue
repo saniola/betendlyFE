@@ -15,10 +15,7 @@
     </div>
 
     <!-- Sidebar -->
-    <Sidebar
-      :current-user="mainState.currentUser"
-      :appointments="[]"
-      :appointments-loading="false" />
+    <Sidebar :current-user="mainState.currentUser" />
   </div>
 </template>
 
