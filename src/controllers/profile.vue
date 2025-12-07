@@ -200,7 +200,13 @@ const user = computed(() => mainState.user);
 const fullName = computed(() => `${user.value?.firstName} ${user.value?.lastName}`);
 const route = useRoute();
 const fullAddress = computed(() => `${user.value?.master?.city}${user.value?.master?.address ? ', ' + user.value.master.address : ''}`);
-const masterProfileId = computed(() => user.value?.master?.id ?? user.value?.id ?? null);
+const masterProfileId = computed(() => {
+  const masterId = user.value?.master?.id;
+  const userId = user.value?.id;
+  const firstServiceMasterId = user.value?.master?.services?.[0]?.masterId;
+
+  return masterId || firstServiceMasterId || (user.value?.isMaster ? userId : null);
+});
 
 const selectedService = ref<ProfileService | null>(null);
 const bookingDialog = ref(false);
@@ -214,7 +220,15 @@ watch(
   },
 );
 
-fetchMember(route.params.id as string);
+watch(
+  () => route.params.id,
+  (newId) => {
+    if (newId) {
+      fetchMember(newId as string);
+    }
+  },
+  { immediate: true },
+);
 
 function bookAppointment(service: ProfileService) {
   if (!mainState.currentUser) {
