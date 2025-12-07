@@ -1,4 +1,5 @@
 :root {
+  /* Colors */
   --color-primary: #11c4b0;
   --color-primary-dark: #0a6f66;
   --color-primary-contrast: #0f746c;
@@ -13,5 +14,15 @@
   --color-white: #fefefe;
   --color-text-muted: #6b6b6b;
   --color-primary-rgb: 17, 196, 176;
+
+  /* Border Radius */
+  --radius-full: 50%; /* Для аватарів, круглих кнопок */
+  --radius-pill: 999px; /* Для pill-shaped елементів (теги, badges) */
+  --radius-xl: 24px; /* Для великих карток, модальних вікон */
+  --radius-lg: 20px; /* Для середніх карток, контейнерів */
+  --radius-md: 16px; /* Для стандартних карток */
+  --radius-sm: 12px; /* Для малих карток, inputs */
+  --radius-xs: 8px; /* Для дрібних елементів */
+  --radius-xxs: 4px; /* Для мінімальних елементів */
 }
 
