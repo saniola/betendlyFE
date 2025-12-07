@@ -5,24 +5,116 @@
     <UserProfileSidebar :user="currentUser" />
 
     <UserAppointmentsSidebar
-      :appointments="appointments || []"
+      :appointments="todayConfirmedAppointments"
       :is-master="currentUser.isMaster"
-      :loading="appointmentsLoading"
-      class="mt-4" />
+      :loading="loading"
+      class="mt-4"
+      @view-all="onViewAllAppointments" />
+
+    <MasterPendingRequests
+      v-if="currentUser.isMaster"
+      :requests="pendingRequests"
+      :loading="loading"
+      class="mt-4"
+      @accept="onAcceptRequest"
+      @reject="onRejectRequest"
+      @view-all="goToAppointments" />
   </aside>
+
+  <AppointmentsCalendarModal
+    v-if="currentUser?.isMaster"
+    v-model="appointmentsModalOpen"
+    :initial-appointments="mainState.appointments"
+    :master-id="currentUser.id"
+    :is-master="currentUser.isMaster" />
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import { fetchAppointments } from '@/actions/fetch-appointments';
+import { acceptAppointment } from '@/actions/accept-appointment';
+import { rejectAppointment } from '@/actions/reject-appointment';
+import { mainState } from '@/state';
 import UserProfileSidebar from '@/components/user-profile-sidebar.vue';
 import UserAppointmentsSidebar from '@/components/user-appointments-sidebar.vue';
+import MasterPendingRequests from '@/components/master-pending-requests.vue';
+import AppointmentsCalendarModal from '@/components/appointments-calendar-modal.vue';
 import type { CurrentUser } from '@/types/current-user';
-import type { Appointment } from '@/types/appointment';
 
 defineProps<{
   currentUser: CurrentUser | null;
-  appointments?: Appointment[];
-  appointmentsLoading?: boolean;
 }>();
+
+const loading = ref(false);
+const router = useRouter();
+const appointmentsModalOpen = ref(false);
+
+const todayConfirmedAppointments = computed(() => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  return mainState.appointments.filter(apt => {
+    if (apt.status !== 1) return false;
+    const aptDate = new Date(apt.startUtc);
+    return aptDate >= today && aptDate < tomorrow;
+  });
+});
+
+const pendingRequests = computed(() => {
+  return mainState.appointments
+    .filter(req => req.status === 0)
+    .sort((a, b) => new Date(a.startUtc).getTime() - new Date(b.startUtc).getTime());
+});
+
+watch(
+  () => mainState.currentUser?.id,
+  async (userId) => {
+    if (!userId) return;
+    await refreshAppointments();
+  },
+  { immediate: true },
+);
+
+async function refreshAppointments() {
+  if (!mainState.currentUser) return;
+  loading.value = true;
+  try {
+    const today = new Date();
+    const endDate = new Date(today);
+    endDate.setMonth(endDate.getMonth() + 1);
+    await fetchAppointments(today, endDate);
+  } finally {
+    loading.value = false;
+  }
+}
+
+async function onAcceptRequest(id: string) {
+  await acceptAppointment(id);
+  await refreshAppointments();
+}
+
+async function onRejectRequest(id: string) {
+  await rejectAppointment(id);
+  await refreshAppointments();
+}
+
+function onViewAllAppointments() {
+  if (!mainState.currentUser?.isMaster) return;
+  appointmentsModalOpen.value = true;
+}
+
+async function goToAppointments() {
+  if (!mainState.currentUser) return;
+
+  await router.push({
+    name: 'profile',
+    params: { id: mainState.currentUser.id },
+    hash: '#appointments-section',
+  });
+}
 </script>
 
 <style module lang="scss">
@@ -30,15 +122,13 @@ defineProps<{
   flex-shrink: 0;
   width: 320px;
   position: sticky;
-  top: 80px; // Account for header height
+  top: 80px;
   padding-top: 24px;
 }
 
-// Hide sidebar on small screens
 @media (max-width: 1024px) {
   .sidebar {
     display: none;
   }
 }
 </style>
-
