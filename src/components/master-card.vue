@@ -1,73 +1,68 @@
 <template>
   <li>
-    <v-card :class="$style.component">
-      <RouterLink
-        :class="$style.avatar"
-        :to="`/member/${master.userId}`">
-        <img
-          :alt="master.fullName"
-          :src="props.master.avatarUrl || defaultAvatar" />
-      </RouterLink>
-
-      <div :class="$style.info">
-        <h3 :class="$style.name">
-          <RouterLink :to="`/member/${master.userId}`">
-            {{ master.fullName }}
-          </RouterLink>
-        </h3>
-
-        <p
-          v-if="master.about"
-          :class="$style.about">
-          {{ master.about }}
-        </p>
-
-        <ul
-          v-if="master.skills && master.skills.length"
-          :class="$style.skills">
-          <li
-            v-for="skill in master.skills"
-            :key="skill">
-            <v-chip
-              color="primary"
-              flat
-              size="small"
-              variant="flat"
-              :text="skill"/>
-          </li>
-        </ul>
-
-        <p
-          v-if="master.city"
-          :class="$style.address">
-          <v-icon icon="mdi-map-marker" start />
-
-          <a
-            :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`"
-            target="_blank"
-            rel="noopener"
-            class="text-body-2 d-flex align-center">
-            {{ fullAddress }}
-          </a>
-        </p>
-
-        <div :class="$style.rating">
-          <v-rating
-            :model-value="4.7"
-            half-increments
-            readonly
-            color="amber"
-            size="24" />
-
-          <span>4.7</span>
-
-          <span
-            :class="$style.feedbacks">
-            (12 відгуків)
-          </span>
+    <RouterLink
+      :to="`/member/${master.userId}`"
+      :class="$style.cardLink">
+      <v-card :class="$style.component">
+        <div :class="$style.avatar">
+          <img
+            :alt="master.fullName"
+            :src="props.master.avatarUrl || defaultAvatar" />
         </div>
-      </div>
-    </v-card>
+
+        <div :class="$style.info">
+          <h3 :class="$style.name">
+            {{ master.fullName }}
+          </h3>
+
+          <p
+            v-if="master.about"
+            :class="$style.about">
+            {{ master.about }}
+          </p>
+
+          <ul
+            v-if="master.skills && master.skills.length"
+            :class="$style.skills">
+            <li
+              v-for="skill in master.skills"
+              :key="skill">
+              <v-chip
+                color="primary"
+                flat
+                size="small"
+                variant="flat"
+                :text="skill"/>
+            </li>
+          </ul>
+
+          <p
+            v-if="master.city"
+            :class="$style.address">
+            <v-icon icon="mdi-map-marker" start />
+            <span class="text-body-2">
+              {{ fullAddress }}
+            </span>
+          </p>
+
+          <div :class="$style.rating">
+            <v-rating
+              :model-value="4.7"
+              half-increments
+              readonly
+              color="amber"
+              size="24" />
+
+            <span>4.7</span>
+
+            <span
+              :class="$style.feedbacks">
+              (12 відгуків)
+            </span>
+          </div>
+        </div>
+      </v-card>
+    </RouterLink>
   </li>
 </template>
 
@@ -85,12 +80,27 @@ const fullAddress = computed(() => `${props.master.city}${props.master.address ?
 </script>
 
 <style module lang="scss">
+.cardLink {
+  display: block;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
 .component {
   align-items: center;
   display: flex !important; //to override v-card
   flex-direction: column;
   margin-bottom: 16px;
   padding: 16px !important; //to override v-card
+  transition: box-shadow 0.2s ease;
+
+  .cardLink:hover & {
+    box-shadow: 0 4px 20px rgba(var(--color-primary-rgb), 0.15);
+  }
 }
 
 .avatar {
@@ -98,7 +108,7 @@ const fullAddress = computed(() => `${props.master.city}${props.master.address ?
 
   img {
     display: block;
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     height: 100px;
     width: 100px;
     object-fit: cover;
@@ -110,14 +120,13 @@ const fullAddress = computed(() => `${props.master.city}${props.master.address ?
 }
 
 .name {
+  color: #000;
   margin-bottom: 8px;
+  font-size: 1.25rem;
+  font-weight: 600;
 
-  a {
-    color: #000;
-
-    &:hover {
-      opacity: 0.6;
-    }
+  .cardLink:hover & {
+    color: var(--color-primary);
   }
 }
 
@@ -138,7 +147,7 @@ const fullAddress = computed(() => `${props.master.city}${props.master.address ?
 .skill {
   background-color: var(--color-chip);
   color: var(--color-white);
-  border-radius: 3px;
+  border-radius: var(--radius-xxs);
   padding: 3px;
 }
 
@@ -146,13 +155,10 @@ const fullAddress = computed(() => `${props.master.city}${props.master.address ?
   align-items: center;
   display: flex;
   margin-bottom: 8px;
+  color: #000;
 
-  a {
-    color: #000;
-
-    &:hover {
-      opacity: 0.8;
-    }
+  span {
+    color: inherit;
   }
 }
 

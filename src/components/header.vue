@@ -105,7 +105,7 @@ const route = useRoute();
 }
 
 .avatar {
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   object-fit: cover;
 }
 
