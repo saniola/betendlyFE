@@ -12,20 +12,26 @@
 
     <template #append>
       <div :class="$style.actions">
-        <template v-if="isMaster && appointment.status === 0">
-          <v-btn
-            size="small"
-            color="green"
-            @click="$emit('accept', appointment.id)">
-            Прийняти
-          </v-btn>
+        <template v-if="appointment.status === 0">
+          <template v-if="isMaster">
+            <v-btn
+              size="small"
+              color="green"
+              @click="$emit('accept', appointment.id)">
+              Прийняти
+            </v-btn>
 
-          <v-btn
-            size="small"
-            color="red"
-            @click="$emit('reject', { id: appointment.id, event: $event })">
-            Відхилити
-          </v-btn>
+            <v-btn
+              size="small"
+              color="red"
+              @click="$emit('reject', { id: appointment.id, event: $event })">
+              Відхилити
+            </v-btn>
+          </template>
+
+          <p
+            v-else
+            v-text="'Очікує підтвердження'" />
         </template>
 
         <template v-else-if="appointment.status === 1">
