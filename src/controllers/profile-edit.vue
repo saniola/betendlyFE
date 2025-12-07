@@ -320,7 +320,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue';
 import { createService } from '@/actions/create-service';
 import { deleteService } from '@/actions/delete-service';
 import { fetchMember } from '@/actions/fetch-member';
@@ -408,16 +408,20 @@ watch(user, (value, previous) => {
   }
 }, { immediate: true });
 
-onMounted(async () => {
-  const userId = route.params.id as string;
+watch(
+  () => route.params.id,
+  async (newId) => {
+    if (!newId) return;
 
-  if (mainState.currentUser && mainState.currentUser.id !== userId) {
-    router.push({ name: 'profile', params: { id: userId } });
-    return;
-  }
+    if (mainState.currentUser && mainState.currentUser.id !== newId) {
+      router.push({ name: 'profile', params: { id: newId as string } });
+      return;
+    }
 
-  await fetchProfile();
-});
+    await fetchProfile();
+  },
+  { immediate: true },
+);
 
 async function fetchProfile() {
   const userId = route.params.id as string;
