@@ -24,6 +24,7 @@ import { computed } from 'vue';
 
 const props = defineProps<{
   currentMonth: Date;
+  isMaster: boolean;
   isPrevDisabled: boolean;
 }>();
 
@@ -33,9 +34,10 @@ defineEmits<{
 }>();
 
 const formattedPeriod = computed(() =>
-  props.currentMonth.toLocaleDateString("uk-UA", {
-    month: "long",
-    year: "numeric",
-  })
+  props.currentMonth.toLocaleDateString('uk-UA',
+    props.isMaster
+      ? { day: 'numeric', month: 'long', year: 'numeric' }
+      : { month: 'long', year: 'numeric' }
+  )
 );
 </script>
