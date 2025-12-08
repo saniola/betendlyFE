@@ -1,18 +1,19 @@
 <template>
   <div class="pa-4">
     <PeriodNav
-      :currentMonth="currentMonth"
+      :currentMonth="displayDate"
+      :is-master
       :is-prev-disabled
       @next-month="onNextClick"
       @prev-month="onPrevClick" />
 
     <v-list
-      v-if="filteredAppointments.length"
+      v-if="mainState.appointments.length"
       lines="two">
       <AppointmentItem
-        v-for="appointment in filteredAppointments"
+        v-for="appointment in mainState.appointments"
         :appointment="appointment"
-        :is-master="mainState.user?.isMaster || false"
+        :is-master
         :key="appointment.id"
         @accept="acceptAppointment"
         @add-to-google-calendar="addToGoogleCalendar"
@@ -52,7 +53,8 @@
     </p>
 
     <PeriodNav
-      :currentMonth="currentMonth"
+      :currentMonth="displayDate"
+      :is-master
       :is-prev-disabled
       @next-month="onNextClick"
       @prev-month="onPrevClick" />
@@ -68,45 +70,48 @@ import AppointmentItem from '@/components/appointment.vue';
 import PeriodNav from '@/components/period-nav.vue';
 import { mainState } from '@/state';
 import type { Appointment } from '@/types/appointment';
+import {
+  startOfDay,
+  endOfDay,
+  startOfMonth,
+  endOfMonth,
+} from '@/helpers/dates';
 
-const currentMonth = ref(new Date());
+const isMaster = computed(() => mainState.user?.isMaster ?? false);
 const today = new Date();
-const periodStart = ref(new Date(today));
-const periodEnd = ref(endOfMonth(today));
+const periodStart = ref(isMaster.value ? startOfDay(today) : new Date(today));
+const periodEnd = ref(isMaster.value ? endOfDay(today) : endOfMonth(today));
+const displayDate = computed(() => (isMaster.value ? periodStart.value : new Date(periodStart.value)));
 const isConfirmVisible = ref(false);
 const appointmentId = ref<string | null>(null);
 const actionElement = ref<HTMLElement | null>(null);
 const isPrevDisabled = computed(() => {
+  if (isMaster.value) {
+    return periodStart.value.toDateString() === today.toDateString();
+  }
+
   const prevMonth = new Date(periodStart.value);
   prevMonth.setMonth(prevMonth.getMonth() - 1);
 
   return (
     prevMonth.getFullYear() < today.getFullYear() ||
     (prevMonth.getFullYear() === today.getFullYear() &&
-      prevMonth.getMonth() < today.getMonth())
+    prevMonth.getMonth() < today.getMonth())
   );
 });
 
-const filteredAppointments = computed(() => mainState.appointments.filter((item: Appointment) => {
-    const start = new Date(item.startUtc);
-    return (
-      start.getMonth() === currentMonth.value.getMonth() &&
-      start.getFullYear() === currentMonth.value.getFullYear()
-    );
-  }),
-);
-
 fetchAppointments(periodStart.value, periodEnd.value);
 
-function startOfMonth(date: Date) {
-  return new Date(date.getFullYear(), date.getMonth(), 1);
-}
-
-function endOfMonth(date: Date) {
-  return new Date(date.getFullYear(), date.getMonth() + 1, 0);
-}
-
 function onNextClick() {
+  if (isMaster.value) {
+    const next = new Date(periodStart.value);
+    next.setDate(next.getDate() + 1);
+    periodStart.value = startOfDay(next);
+    periodEnd.value = endOfDay(next);
+    fetchAppointments(periodStart.value, periodEnd.value);
+    return;
+  }
+
   const nextMonth = new Date(periodStart.value);
   nextMonth.setMonth(nextMonth.getMonth() + 1);
 
@@ -116,25 +121,25 @@ function onNextClick() {
 }
 
 function onPrevClick() {
-  const prevMonth = new Date(periodStart.value);
-  prevMonth.setMonth(prevMonth.getMonth() - 1);
+  if (isMaster.value) {
+    const prev = new Date(periodStart.value);
+    prev.setDate(prev.getDate() - 1);
 
-  const isGoingToCurrentMonth =
-    prevMonth.getFullYear() === today.getFullYear() &&
-    prevMonth.getMonth() === today.getMonth();
-
-  if (isGoingToCurrentMonth) {
-    periodStart.value = today;
-    periodEnd.value = endOfMonth(today);
+    periodStart.value = startOfDay(prev);
+    periodEnd.value = endOfDay(prev);
+    fetchAppointments(periodStart.value, periodEnd.value);
     return;
   }
 
-  const wouldBeBeforeCurrent =
+  const prevMonth = new Date(periodStart.value);
+  prevMonth.setMonth(prevMonth.getMonth() - 1);
+
+  const invalidPrev =
     prevMonth.getFullYear() < today.getFullYear() ||
     (prevMonth.getFullYear() === today.getFullYear() &&
-     prevMonth.getMonth() < today.getMonth());
+    prevMonth.getMonth() < today.getMonth());
 
-  if (wouldBeBeforeCurrent) return;
+  if (invalidPrev) return;
 
   periodStart.value = startOfMonth(prevMonth);
   periodEnd.value = endOfMonth(prevMonth);
@@ -146,14 +151,14 @@ function addToGoogleCalendar(appointment: Appointment) {
   const end = new Date(appointment.endUtc);
 
   const format = (date: Date) =>
-    date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+  date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 
   const startStr = format(start);
   const endStr = format(end);
 
   const params = new URLSearchParams({
     action: "TEMPLATE",
-    text: `${appointment.serviceName} - ${mainState.user?.isMaster ? appointment.clientName : appointment.masterName}`,
+    text: `${appointment.serviceName} - ${isMaster.value ? appointment.clientName : appointment.masterName}`,
     dates: `${startStr}/${endStr}`,
     details: `Запис на ${appointment.serviceName}`,
   });
