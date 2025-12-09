@@ -29,9 +29,13 @@
             </v-btn>
           </template>
 
-          <p
+          <v-chip
             v-else
-            v-text="'Очікує підтвердження'" />
+            color="warning"
+            size="small"
+            variant="flat">
+            Очікує
+          </v-chip>
         </template>
 
         <template v-else-if="appointment.status === 1">
