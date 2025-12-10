@@ -93,15 +93,30 @@ const route = useRoute();
   box-shadow: 0 2px 12px rgba(var(--color-primary-rgb), 0.18);
 }
 
+.component::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+  pointer-events: none;
+}
+
 .navbar {
   align-items: center;
   display: flex;
   justify-content: space-between;
+  gap: 12px;
+  flex-wrap: nowrap;
 }
 
 .logo {
   display: block;
-  width: auto;
+  width: 115px;
+  max-width: 115px;
+  height: auto;
 }
 
 .avatar {
@@ -117,6 +132,9 @@ const route = useRoute();
 
 .actions {
   gap: .8rem;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  width: auto;
 }
 
 .user {
@@ -125,6 +143,7 @@ const route = useRoute();
 
 .username {
   color: var(--color-primary-dark);
+  white-space: nowrap;
   &:hover {
     opacity: .8;
   }
@@ -136,6 +155,66 @@ const route = useRoute();
 
   :global(.v-btn__content) {
     color: var(--color-primary-dark) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .actions {
+    gap: 0.5rem;
+  }
+
+  .user {
+    gap: 0.25rem;
+  }
+
+  .username {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .component {
+    padding: 10px 0;
+  }
+
+  .actions {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .logo {
+    height: auto;
+    max-width: 150px;
+  }
+
+  .actions {
+    gap: 8px;
+  }
+
+  .outlineButton {
+    padding-inline: 12px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .navbar {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .actions {
+    justify-content: stretch;
+    flex-wrap: wrap;
+  }
+
+  .outlineButton {
+    width: fit-content;
+  }
+
+  .username {
+    display: none;
   }
 }
 </style>

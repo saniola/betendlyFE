@@ -101,12 +101,19 @@ function onForgotPassword() {
 
 <style module lang="scss">
 .card {
-  width: 300px;
+  width: 100%;
+  max-width: 360px;
+}
+
+@media (min-width: 600px) {
+  .card {
+    max-width: 420px;
+  }
 }
 
 @media (min-width: 1024px) {
   .card {
-    width: 500px;
+    max-width: 500px;
   }
 }
 </style>

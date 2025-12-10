@@ -1,12 +1,12 @@
 <template>
   <v-container
     v-if="user"
-    class="py-6">
+    :class="['py-6', $style.page]">
     <v-btn
-      color="primary"
       variant="text"
       prepend-icon="mdi-arrow-left"
       class="mb-4"
+      :class="$style.backLink"
       @click="goBack">
       Назад до профілю
     </v-btn>
@@ -187,46 +187,50 @@
         </v-btn>
       </div>
 
-      <v-table v-if="services.length">
-        <thead>
-          <tr>
-            <th class="text-left">Назва</th>
-            <th class="text-left">Тривалість</th>
-            <th class="text-left">Ціна</th>
-            <th class="text-left">Опис</th>
-            <th class="text-left">Дії</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="service in services"
-            :key="service.id">
-            <td>{{ service.name }}</td>
-            <td>{{ service.durationMinutes }} хв</td>
-            <td>{{ service.price }} грн</td>
-            <td>{{ service.description }}</td>
-            <td>
-              <v-btn
-                icon
-                size="small"
-                color="primary"
-                variant="text"
-                @click="openServiceDialog(service)">
-                <v-icon icon="mdi-pencil" />
-              </v-btn>
+      <div
+        v-if="services.length"
+        :class="$style.tableWrapper">
+        <v-table>
+          <thead>
+            <tr>
+              <th class="text-left">Назва</th>
+              <th class="text-left">Тривалість</th>
+              <th class="text-left">Ціна</th>
+              <th class="text-left">Опис</th>
+              <th class="text-left">Дії</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="service in services"
+              :key="service.id">
+              <td>{{ service.name }}</td>
+              <td>{{ service.durationMinutes }} хв</td>
+              <td>{{ service.price }} грн</td>
+              <td>{{ service.description }}</td>
+              <td>
+                <v-btn
+                  icon
+                  size="small"
+                  color="primary"
+                  variant="text"
+                  @click="openServiceDialog(service)">
+                  <v-icon icon="mdi-pencil" />
+                </v-btn>
 
-              <v-btn
-                icon
-                size="small"
-                variant="text"
-                color="error"
-                @click="removeService(service.id)">
-                <v-icon icon="mdi-delete" />
-              </v-btn>
-            </td>
-          </tr>
-        </tbody>
-      </v-table>
+                <v-btn
+                  icon
+                  size="small"
+                  variant="text"
+                  color="error"
+                  @click="removeService(service.id)">
+                  <v-icon icon="mdi-delete" />
+                </v-btn>
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
+      </div>
 
       <v-alert
         v-else
@@ -236,7 +240,7 @@
       </v-alert>
     </v-card>
 
-    <div class="d-flex flex-column flex-md-row gap-4 mt-6">
+    <div :class="[$style.actions, 'mt-6']">
       <v-btn
         color="primary"
         :loading="isSaving"
@@ -314,7 +318,7 @@
 
   <v-container
     v-else
-    class="py-6 text-center">
+    :class="['py-6 text-center', $style.page]">
     <v-progress-circular indeterminate color="primary" />
   </v-container>
 </template>
@@ -589,3 +593,37 @@ function normalizeFileInput(input?: File[] | File | FileList | null) {
 }
 </script>
 
+<style module lang="scss">
+.page {
+  padding-top: clamp(24px, 8vw, 64px) !important;
+}
+
+.backLink {
+  color: var(--color-primary-dark) !important;
+  font-weight: 600;
+
+  &:hover {
+    color: var(--color-primary) !important;
+  }
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.tableWrapper :global(table) {
+  min-width: 640px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 960px) {
+  .actions {
+    flex-direction: row;
+  }
+}
+</style>

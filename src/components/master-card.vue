@@ -94,6 +94,8 @@ const fullAddress = computed(() => `${props.master.city}${props.master.address ?
   align-items: center;
   display: flex !important; //to override v-card
   flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
   margin-bottom: 16px;
   padding: 16px !important; //to override v-card
   transition: box-shadow 0.2s ease;
@@ -109,8 +111,9 @@ const fullAddress = computed(() => `${props.master.city}${props.master.address ?
   img {
     display: block;
     border-radius: var(--radius-full);
-    height: 100px;
-    width: 100px;
+    width: clamp(72px, 12vw, 100px);
+    aspect-ratio: 1;
+    height: auto;
     object-fit: cover;
   }
 }
@@ -179,6 +182,21 @@ const fullAddress = computed(() => `${props.master.city}${props.master.address ?
     flex-direction: row;
     column-gap: 24px;
     margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .component {
+    text-align: left;
+  }
+
+  .avatar img {
+    height: 80px;
+    width: 80px;
+  }
+
+  .rating {
+    flex-wrap: wrap;
   }
 }
 </style>

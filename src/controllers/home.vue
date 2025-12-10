@@ -75,15 +75,22 @@ function onSkillChange(skill: string) {
   display: flex;
   gap: 24px;
   align-items: flex-start;
+  width: 100%;
 }
 
 .mainContent {
   flex: 1;
   min-width: 0; // Important for flex child to shrink properly
-  padding-top: 24px;
+  width: 100%;
+  padding-top: 12px;
 }
 
 @media (max-width: 1024px) {
+  .pageLayout {
+    flex-direction: column;
+    gap: 16px;
+  }
+
   .mainContent {
     max-width: 100%;
   }

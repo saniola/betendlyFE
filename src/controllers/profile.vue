@@ -116,51 +116,53 @@
             Послуги
           </h3>
 
-          <v-table>
-            <thead>
-              <tr>
-                <th
-                  class="text-left"
-                  v-text="'Назва'" />
+          <div :class="$style.tableWrapper">
+            <v-table class="text-body-2">
+              <thead>
+                <tr>
+                  <th
+                    class="text-left"
+                    v-text="'Назва'" />
 
-                <th
-                  class="text-left"
-                  v-text="'Опис'" />
+                  <th
+                    class="text-left"
+                    v-text="'Опис'" />
 
-                <th
-                  class="text-left"
-                  v-text="'Тривалість'" />
+                  <th
+                    class="text-left"
+                    v-text="'Тривалість'" />
 
-                <th class="text-left">Ціна</th>
+                  <th class="text-left">Ціна</th>
 
-                <th />
-              </tr>
-            </thead>
+                  <th />
+                </tr>
+              </thead>
 
-            <tbody>
-              <tr
-                v-for="service in user.master.services"
-                :key="service.id">
-                <td>{{ service.name }}</td>
+              <tbody>
+                <tr
+                  v-for="service in user.master.services"
+                  :key="service.id">
+                  <td>{{ service.name }}</td>
 
-                <td>{{ service.description }}</td>
+                  <td>{{ service.description }}</td>
 
-                <td>{{ `${service.durationMinutes} хв` }}</td>
+                  <td>{{ `${service.durationMinutes} хв` }}</td>
 
-                <td>{{ `${service.price} грн` }}</td>
+                  <td>{{ `${service.price} грн` }}</td>
 
-                <td>
-                  <v-btn
-                    v-if="mainState.currentUser?.id !== user.id"
-                    color="primary"
-                    type="button"
-                    @click="bookAppointment(service)">
-                    Записатись
-                  </v-btn>
-                </td>
-              </tr>
-            </tbody>
-          </v-table>
+                  <td>
+                    <v-btn
+                      v-if="mainState.currentUser?.id !== user.id"
+                      color="primary"
+                      type="button"
+                      @click="bookAppointment(service)">
+                      Записатись
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
+            </v-table>
+          </div>
         </template>
       </template>
 
@@ -280,6 +282,26 @@ defineExpose({
 
   &:hover {
     opacity: 0.8;
+  }
+}
+
+.tableWrapper {
+  margin-top: 12px;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.tableWrapper :global(table) {
+  min-width: 640px;
+}
+
+@media (max-width: 768px) {
+  .contact {
+    word-break: break-word;
+  }
+
+  .tableWrapper :global(table) {
+    min-width: 520px;
   }
 }
 </style>
