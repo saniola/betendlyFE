@@ -162,4 +162,19 @@ function handleViewAll() {
     color: var(--color-primary-dark);
   }
 }
+
+@media (max-width: 600px) {
+  .appointmentItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .appointmentInfo {
+    width: 100%;
+  }
+
+  :global(.v-chip) {
+    width: auto;
+  }
+}
 </style>

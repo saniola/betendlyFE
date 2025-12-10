@@ -1,6 +1,7 @@
 <template>
-  <div class="d-flex justify-space-between align-center mb-4">
+  <div :class="[$style.component, 'mb-4']">
     <v-btn
+      :class="$style.button"
       color="primary"
       variant="outlined"
       :disabled="isPrevDisabled"
@@ -8,9 +9,12 @@
       Попередній
     </v-btn>
 
-    <strong>{{ formattedPeriod }}</strong>
+    <strong :class="$style.period">
+      {{ formattedPeriod }}
+    </strong>
 
     <v-btn
+      :class="$style.button"
       color="primary"
       variant="outlined"
       @click="$emit('next-month')">
@@ -41,3 +45,36 @@ const formattedPeriod = computed(() =>
   )
 );
 </script>
+
+<style module lang="scss">
+.component {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.period {
+  text-transform: capitalize;
+}
+
+.button {
+  min-width: 160px;
+}
+
+@media (max-width: 768px) {
+  .component {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .period {
+    text-align: center;
+  }
+}
+</style>
