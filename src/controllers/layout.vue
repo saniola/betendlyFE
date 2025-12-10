@@ -39,7 +39,7 @@ import { mainState } from '@/state';
   background-color: #fff;
   min-height: 100vh;
   padding-bottom: 30px;
-  padding-top: 52px;
+  padding-top: clamp(56px, 4vw + 18px, 90px);
   display: flex;
   flex-direction: column;
 }
@@ -47,7 +47,7 @@ import { mainState } from '@/state';
 .content {
   flex: 1;
   width: 100%;
-  padding-top: 16px;
+  padding-top: clamp(8px, 1vw, 12px);
 }
 
 .loader {
