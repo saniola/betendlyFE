@@ -7,6 +7,8 @@
         v-if="!isCompactView"
         :class="$style.sidebar">
         <div :class="$style.sections">
+          <UserProfileSidebar :user="currentUser" />
+
           <UserAppointmentsSidebar
             :appointments="todayConfirmedAppointments"
             :is-master="currentUser.isMaster"
@@ -20,8 +22,6 @@
             @accept="onAcceptRequest"
             @reject="onRejectRequest"
             @view-all="goToAppointments" />
-
-          <UserProfileSidebar :user="currentUser" />
         </div>
       </aside>
 
