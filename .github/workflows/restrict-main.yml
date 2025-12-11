@@ -1,0 +1,17 @@
+name: Restrict PRs to main
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  block_pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Only allow PRs from develop → main
+        run: |
+          if [ "${{ github.head_ref }}" != "develop" ]; then
+            echo "⛔ Forbidden: Only PRs from 'develop' are allowed to merge into 'main'."
+            echo "Your branch: ${{ github.head_ref }}"
+            exit 1
+          fi
